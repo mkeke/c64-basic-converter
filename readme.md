@@ -6,6 +6,13 @@ a prg file.
 
 watch task that listens to file changes and triggers the conversion
 
+set up as a bash script that can be started like this:  
+```
+$ z.basic [-w|-watch] [-h|-help] <filename>
+```
+optional argument -w (or -watch) to continue watching for changes after the initial build.
+-h (or -help) to display useful things about the parser and the code structure
+
 - auto line numbers
 - labels (goto/gosub) translated to line numbers
 - variables translated to AA AB AC AD
