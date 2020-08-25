@@ -16,13 +16,46 @@ initial build.
 
 ## wanted features
 
-- auto line numbers
+- auto convert to line numbers
+- master file can have indentation
 - labels (goto/gosub) translated to line numbers
 - variables translated to AA AB AC AD
 - support /* comments */ and // comments
 - compile to prg
 - toggle warp mode (config)
 - toggle autostart x64 (config)
+
+## code structure
+
+the master file might look like this
+```
+{CONF some kind of config options}
+
+/*
+    multiline
+    comment
+*/
+
+// clear screen
+print chr$(147)
+
+{VAR name} = "world"
+
+{LABEL foobar}
+    print "hello " {VAR name} " ";
+    goto {LABEL foobar}
+
+```
+
+it is converted to this
+```
+10 print chr$(147)
+20 aa$ = "world"
+30 print "hello " aa$ " ";
+40 goto 30
+```
+
+I don't know what to do with the config yet.
 
 ## todos
 
