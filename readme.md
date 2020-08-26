@@ -1,10 +1,15 @@
-# make a C64 BASIC parser with node
+# C64 BASIC parser
 
-## Current version
 
-The following features have been implemented
+Objective: Make it possible to code C64 BASIC in a text editor, using labels instead of line numbers, and proper variable names instead of two-character long names. Convert the master file to a pure basic .txt file and optionally a .prg file.
+
+Created in nodejs.
+
+
+## Currently implemented features
+
 - Ignores lines that are blank or only contain whitespace
-- Adds line numbers to all lines
+- Adds line numbers to lines
 
 
 The following command:
@@ -30,38 +35,49 @@ print "hello " a$
 
 ## Work in progress
 
-Make it possible to code C64 BASIC in a text editor, using labels instead of
-line numbers, and proper variable names. Convert the master file to a pure
-basic txt file and optionally a prg file.
-
-watch task that listens to file changes and triggers the conversion
-
-set up as a bash script that can be started like this:  
 ```
-$ z.basic [-w|-watch] [-h|-help] <filename>
+$ z.basic.js [-w|-watch] [-h|-help] <filename>
 ```
+
 optional argument -w (or -watch) to continue watching for changes after the
 initial build.
--h (or -help) to display useful things about the parser and the code structure
+
+-h (or -help) to display useful things about the converter and the code structure
 
 Try to make it with pure nodejs, not being dependent on gulp etc.
 
-No way I'm going to implement code validation!
+No, there will be no validation of the actual BASIC code!
 
-## wanted features
+## wanted features / todos
 
-- auto convert to line numbers
-- master file can have indentation
-- labels (goto/gosub) translated to line numbers
-- variables translated to AA AB AC AD
-- support /* comments */ and // comments
-- compile to prg
-- toggle warp mode (config)
-- toggle autostart x64 (config)
+- [x] convert: remove empty lines
+- [x] convert: add line numbers
+- [ ] add task with command line params
+- [ ] option to watch for changes to master file, trigger build
+- [ ] option to display help
+- [ ] instructions on how to install as a global script
+- [ ] master file can have indentation
+- [ ] labels + code can be on the same line
+- [ ] configurable steps between line numbers (1, 5, 10, ..)
+- [ ] convert: remove comments
+- [ ] support /* comments */ and // comments
+- [ ] convert: save to file
+- [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
+- [ ] config (optional) on top of master file
+- [ ] option to compile to prg (or do it every time?)
+- [ ] option to autostart x64 after build
+- [ ] option to start x64 in warp mode
+- [ ] detect labels for GOSUB/GOTO
+- [ ] labels (goto/gosub) translated to line numbers
+- [ ] detect VARIABLES
+- [ ] variables translated to AA AB AC AD
+- [ ] add verbose help option
 
-## code structure
 
-the master file might look like this
+## planned code structure
+
+The master file might look like this
+
 ```
 {CONF some kind of config options}
 
@@ -89,22 +105,8 @@ it is converted to this
 40 goto 30
 ```
 
-I don't know what to do with the config yet.
+(I don't know what to do with the config yet.)
 
-## todos
-
-- [x] setup basic node project
-- [ ] add task with command line params
-- [ ] option to watch for changes
-- [x] convert: strip empty lines
-- [ ] convert: strip comments
-- [x] convert: add line numbers
-- [ ] convert: save to file
-- [ ] load options (if any) on top of file
-- [ ] take options into account
-- [ ] detect labels for GOSUB/GOTO
-- [ ] detect VARIABLES
-- [ ] add verbose help option
 
 ## misc notes
 
