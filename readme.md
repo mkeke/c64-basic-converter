@@ -7,11 +7,12 @@ The following features have been implemented
 - Adds line numbers to all lines
 
 
+The following command:
 ```
 $ node z.basic.js code.txt
 ```
 
-Will read this file (code.txt):
+..will read this file (code.txt):
 ```
 print chr$(147)
 
@@ -19,7 +20,7 @@ a$ = "world"
 print "hello " a$
 ```
 
-And create the following output:
+..and output this
 ```
 10 print chr$(147)
 15 a$ = "world"
@@ -44,6 +45,8 @@ initial build.
 -h (or -help) to display useful things about the parser and the code structure
 
 Try to make it with pure nodejs, not being dependent on gulp etc.
+
+No way I'm going to implement code validation!
 
 ## wanted features
 
