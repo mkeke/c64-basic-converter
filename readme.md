@@ -10,11 +10,14 @@ Created in nodejs.
 
 - Ignores lines that are blank or only contain whitespace
 - Adds line numbers to lines
+- Command line option `-w` or `-watch` watches for changes to the file, and triggers conversion
+- Command line option `-h` or `-help` prints help before exiting
 
 
-The following command:
+The following commands:
 ```
 $ node z.basic.js code.txt
+$ node z.basic.js -w code.txt
 ```
 
 ..will read this file (code.txt):
@@ -31,6 +34,8 @@ print "hello " a$
 15 a$ = "world"
 20 print "hello " a$
 ```
+
+If the `-w` or `-watch` parameter is given, the input file will be watched for changes, triggering new conversions.
 
 
 ## Work in progress
@@ -52,9 +57,9 @@ No, there will be no validation of the actual BASIC code!
 
 - [x] convert: remove empty lines
 - [x] convert: add line numbers
-- [ ] add task with command line params
-- [ ] option to watch for changes to master file, trigger build
-- [ ] option to display help
+- [x] accept command line params
+- [x] option to watch for changes to master file, trigger build
+- [x] option to display help
 - [ ] instructions on how to install as a global script
 - [ ] master file can have indentation
 - [ ] labels + code can be on the same line
