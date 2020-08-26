@@ -1,0 +1,5 @@
+print chr$(147)
+
+a$ = "world"
+print "hello " a$
+
