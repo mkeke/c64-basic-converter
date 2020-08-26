@@ -1,4 +1,33 @@
-# make a C64 BASIC parser with node (gulp)
+# make a C64 BASIC parser with node
+
+## Current version
+
+The following features have been implemented
+- Ignores lines that are blank or only contain whitespace
+- Adds line numbers to all lines
+
+
+```
+$ node z.basic.js code.txt
+```
+
+Will read this file (code.txt):
+```
+print chr$(147)
+
+a$ = "world"
+print "hello " a$
+```
+
+And create the following output:
+```
+10 print chr$(147)
+15 a$ = "world"
+20 print "hello " a$
+```
+
+
+## Work in progress
 
 Make it possible to code C64 BASIC in a text editor, using labels instead of
 line numbers, and proper variable names. Convert the master file to a pure
@@ -13,6 +42,8 @@ $ z.basic [-w|-watch] [-h|-help] <filename>
 optional argument -w (or -watch) to continue watching for changes after the
 initial build.
 -h (or -help) to display useful things about the parser and the code structure
+
+Try to make it with pure nodejs, not being dependent on gulp etc.
 
 ## wanted features
 
@@ -59,16 +90,18 @@ I don't know what to do with the config yet.
 
 ## todos
 
-- setup basic node/gulp project
-- add task with command line params
-- option to watch for changes
-- convert: strip comments and empty lines and save to file
-- convert: add line numbers and save to file
-- load options (if any) on top of file
-- take options into account
-- detect labels for GOSUB/GOTO
-- detect VARIABLES
-- add verbose help option
+- [x] setup basic node project
+- [ ] add task with command line params
+- [ ] option to watch for changes
+- [x] convert: strip empty lines
+- [ ] convert: strip comments
+- [x] convert: add line numbers
+- [ ] convert: save to file
+- [ ] load options (if any) on top of file
+- [ ] take options into account
+- [ ] detect labels for GOSUB/GOTO
+- [ ] detect VARIABLES
+- [ ] add verbose help option
 
 ## misc notes
 
