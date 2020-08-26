@@ -35,13 +35,14 @@ function convert() {
         // remove whitespace on both sides of line
         line = line.replace(/^\s+|\s+$/g, "");
 
+        // create line numbers
         if (line != "") {
             code.push(lineNumber + " " + line);
             lineNumber += 5;
         }
     }
 
-    // create line numbers. output
+    // output
     for (i in code) {
         log(code[i]);
     }
