@@ -55,7 +55,7 @@ for(let i=0; i<sourceFile.length; i++) {
     }
 }
 
-// create line numbers. output or save file
+// create line numbers. output
 for (i in code) {
     log(code[i]);
 }
