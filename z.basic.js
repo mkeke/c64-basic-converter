@@ -29,14 +29,31 @@ function convert() {
 
     let code = [];
     let lineNumber = 10;
+    let isCommentBlock = false;
     for(let i=0; i<sourceFile.length; i++) {
         let line = sourceFile[i];
 
         // remove whitespace on both sides of line
         line = line.replace(/^\s+|\s+$/g, "");
 
+        // remove single-line comments
+        line = line.replace(/^\/\/.*$/, "");
+
+        // remove multi-line comments on a single line
+        line = line.replace(/^\/\*.*\*\/$/, "");
+
+        // start of multi-line comment
+        if (/^\/\*/.test(line)) {
+            isCommentBlock = true;
+        }
+        // end of multi-line comment
+        if (/^\*\//.test(line)) {
+            isCommentBlock = false;
+            line = "";
+        }
+
         // create line numbers
-        if (line != "") {
+        if (!isCommentBlock && line != "") {
             code.push(lineNumber + " " + line);
             lineNumber += 5;
         }

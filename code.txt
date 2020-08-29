@@ -1,5 +1,15 @@
+// clear screen
 print chr$(147)
 
-a$ = "world"
-print "hello " a$
+/*
+    set screen colors
+    53280 is the border
+    53281 is the screen
+*/
+poke 53280,0
+poke 53281,0
 
+/* display the message */
+a$ = "world"
+rem printing the variable
+print "hello " a$

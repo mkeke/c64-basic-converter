@@ -1,71 +1,102 @@
 # C64 BASIC parser
 
+```
+$ node z.basic.js [-w|-watch] [-h|-help] <code.txt>
+```
 
-Objective: Make it possible to code C64 BASIC in a text editor, using labels instead of line numbers, and proper variable names instead of two-character long names. Convert the master file to a pure basic .txt file and optionally a .prg file.
-
+Converts a formatted text file to C64 BASIC.
 Created in nodejs.
 
 
-## Currently implemented features
+## Command line options
 
-- Ignores lines that are blank or only contain whitespace
-- Adds line numbers to lines
-- Command line option `-w` or `-watch` watches for changes to the file, and triggers conversion
-- Command line option `-h` or `-help` prints help before exiting
+Option `-w` (or `-watch`) watches for changes to the input file, and triggers conversion.
+
+Option `-h` (or `-help`) displays help about the converter.
 
 
-The following commands:
+## Code formatting possibilities
+
+### Automatic line numbers
+
+No need to write line numbers. It is done automatically. Source code:
 ```
-$ node z.basic.js code.txt
-$ node z.basic.js -w code.txt
+poke 53280,0
+print "hello"
 ```
 
-..will read this file (code.txt):
+Converted code:
 ```
+10 poke 53280,0
+15 print "hello"
+```
+
+### Linefeed and indentation
+
+The code can be structured nicely with linefeed and indentation. This will be ignored by the converter.
+Source code:
+```
+poke 53280,0
+poke 53281,0
+
+   print "hello"
+```
+
+Converted code:
+```
+10 poke 53280,0
+15 poke 53281,0
+20 print "hello"
+```
+
+### Comments
+
+The master code can have single-line and multi-line comments. These will be removed by the converter. However, `REM` statements will be kept as part of the final code.
+
+Source code:
+```
+// clear screen
 print chr$(147)
 
+/*
+    set screen colors
+    53280 is the border
+    53281 is the screen
+*/
+poke 53280,0
+poke 53281,0
+
+/* display the message */
 a$ = "world"
+rem printing the variable
 print "hello " a$
+
 ```
 
-..and output this
+Converted code:
 ```
 10 print chr$(147)
-15 a$ = "world"
-20 print "hello " a$
+15 poke 53280,0
+20 poke 53281,0
+25 a$ = "world"
+30 rem printing the variable
+35 print "hello " a$
 ```
 
-If the `-w` or `-watch` parameter is given, the input file will be watched for changes, triggering new conversions.
 
-
-## Work in progress
-
-```
-$ z.basic.js [-w|-watch] [-h|-help] <filename>
-```
-
-optional argument -w (or -watch) to continue watching for changes after the
-initial build.
-
--h (or -help) to display useful things about the converter and the code structure
-
-Try to make it with pure nodejs, not being dependent on gulp etc.
-
-No, there will be no validation of the actual BASIC code!
-
-## wanted features / todos
+## Planned features / todos
 
 - [x] convert: remove empty lines
 - [x] convert: add line numbers
 - [x] accept command line params
 - [x] option to watch for changes to master file, trigger build
 - [x] option to display help
+- [x] master file can have indentation
+- [x] convert: remove comments
+- [x] support /* comments */ and // comments
 - [ ] instructions on how to install as a global script
-- [ ] master file can have indentation
 - [ ] labels + code can be on the same line
 - [ ] configurable steps between line numbers (1, 5, 10, ..)
-- [ ] convert: remove comments
-- [ ] support /* comments */ and // comments
 - [ ] convert: save to file
 - [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
 - [ ] config (optional) on top of master file
@@ -78,39 +109,40 @@ No, there will be no validation of the actual BASIC code!
 - [ ] variables translated to AA AB AC AD
 - [ ] add verbose help option
 
+No, there will be no validation of the actual BASIC code!
 
-## planned code structure
 
-The master file might look like this
+## Thoughts about labels/variables
 
+Labels and variables could be defined like this:
 ```
-{CONF some kind of config options}
-
-/*
-    multiline
-    comment
-*/
-
-// clear screen
-print chr$(147)
-
-{VAR name} = "world"
-
 {LABEL foobar}
-    print "hello " {VAR name} " ";
-    goto {LABEL foobar}
-
+let {VAR name} = "world"
+print "hello " {VAR name};
+goto {LABEL foobar}
 ```
 
-it is converted to this
+And be converted to this:
 ```
-10 print chr$(147)
-20 aa$ = "world"
-30 print "hello " aa$ " ";
-40 goto 30
+10 let AA = "world"
+15 print "hello " AA;
+20 goto 10
 ```
 
-(I don't know what to do with the config yet.)
+Maybe it's a bit annoying to write all the `{VAR ..}` statements every time.
+
+## Thoughts about a config block
+
+The master file might have a config block at the top, in which it's possible to set different things.
+
+Something like this, that can be easily converted to JSON:
+```
+{CONF
+    lineNumberStep: 5,
+    launchEmulator: false,
+    createPRG: false,
+}
+```
 
 
 ## misc notes
