@@ -2,6 +2,7 @@
 const fs = require("fs");
 const log = (str) => { console.log(str); }
 
+
 // define default params
 const params = {
     help: false,
@@ -54,9 +55,10 @@ function convert() {
         }
 
         // look for label definitions
-        let matches = /^\{LABEL ([^\}]+)}/.exec(line);
-        if (matches !== null && matches.length == 2) {
+        let matches = /^\@(.+)$/.exec(line);
+        if (matches != null && matches.length == 2) {
             let label = matches[1];
+
             // if label is already defined, display error
             if(labels[label]) {
                 log(`ERROR: label ${label} is already defined]`);
@@ -77,7 +79,7 @@ function convert() {
     // replace all label references with line numbers
     for(let i in code) {
         for(let x in labels) {
-            code[i] = code[i].replace(`{LABEL ${x}}`, labels[x]);
+            code[i] = code[i].replace(`@${x}`, labels[x]);
         }
     }
 
@@ -103,7 +105,7 @@ function watchFile() {
                 fsWait = false;
             }, 100);
 
-            log("File changed");
+            log("File changed\n");
             convert();
         }
     });

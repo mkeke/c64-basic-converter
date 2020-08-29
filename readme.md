@@ -5,8 +5,10 @@ $ node z.basic.js [-w|-watch] [-h|-help] <code.txt>
 ```
 
 Converts a formatted text file to C64 BASIC.
-Created in nodejs.
 
+## Installation
+
+nodejs must be installed. https://nodejs.org/en/
 
 ## Command line options
 
@@ -19,7 +21,9 @@ Option `-h` (or `-help`) displays help about the converter.
 
 ### Automatic line numbers
 
-No need to write line numbers. It is done automatically. Source code:
+No need to write line numbers. It is done automatically.
+
+Source code:
 ```
 poke 53280,0
 print "hello"
@@ -31,9 +35,10 @@ Converted code:
 15 print "hello"
 ```
 
-### Linefeed and indentation
+### Line feed and indentation
 
 The code can be structured nicely with linefeed and indentation. This will be ignored by the converter.
+
 Source code:
 ```
 poke 53280,0
@@ -89,21 +94,21 @@ Converted code:
 
 ### Labels
 
-It is possible to define labels in the code, and reference these in `GOTO` and `GOSUB` commands. No need to keep track of line numbers.
+It is possible to define labels in the code, and reference these in `GOTO` and `GOSUB` commands. No need to keep track of line numbers. A label is declared by `@foobar` on a line of its own. To `GOTO` or `GOSUB` a label, just write `goto @foobar`.
 
 Source code:
 ```
 for i=0 to 3
-    gosub {LABEL hello}
-    gosub {LABEL number}
+    gosub @hello
+    gosub @number
 next i
 end
 
-{LABEL hello}
+@hello
     print "hello ";
     return
 
-{LABEL number}
+@number
     print i
     return
 ```
@@ -151,24 +156,21 @@ If a label is defined more than once, the converter displays an error.
 No, there will be no validation of the actual BASIC code!
 
 
-## Thoughts about labels/variables
+## Thoughts about variables
 
-Labels and variables could be defined like this:
+Variables could be defined like this:
 ```
-{LABEL foobar}
 let {VAR name} = "world"
 print "hello " {VAR name};
-goto {LABEL foobar}
 ```
 
 And be converted to this:
 ```
 10 let AA = "world"
 15 print "hello " AA;
-20 goto 10
 ```
 
-Maybe it's a bit annoying to write all the `{VAR ..}` statements every time.
+Maybe it's a bit annoying to write all the `{VAR ..}` statements every time. Perhaps a simpler prefix/wrapper is better.
 
 ## Thoughts about a config block
 
