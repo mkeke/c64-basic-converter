@@ -139,8 +139,9 @@ Something like this, that can be easily converted to JSON:
 ```
 {CONF
     lineNumberStep: 5,
-    launchEmulator: false,
     createPRG: false,
+    launchEmulator: false,
+    warpMode: true,
 }
 ```
 
