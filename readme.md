@@ -142,7 +142,6 @@ If a label is defined more than once, the converter displays an error.
 - [x] labels (goto/gosub) translated to line numbers
 - [ ] detect VARIABLES
 - [ ] variables translated to AA AB AC AD
-- [ ] labels + code can be on the same line
 - [ ] output to file
 - [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
 - [ ] option to create .prg file
