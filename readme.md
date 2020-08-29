@@ -1,4 +1,4 @@
-# C64 BASIC parser
+# C64 BASIC converter
 
 ```
 $ node z.basic.js [-w|-watch] [-h|-help] <code.txt>
