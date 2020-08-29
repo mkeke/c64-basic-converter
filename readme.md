@@ -88,7 +88,7 @@ Converted code:
 ```
 
 
-## Planned features / todos
+## Planned features / TODOs / DONEs
 
 - [x] convert: remove empty lines
 - [x] convert: add line numbers
@@ -98,18 +98,18 @@ Converted code:
 - [x] master file can have indentation
 - [x] convert: remove comments
 - [x] support /* comments */ and // comments
-- [ ] labels + code can be on the same line
-- [ ] configurable steps between line numbers (1, 5, 10, ..)
-- [ ] convert: save to file
-- [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
-- [ ] config (optional) on top of master file
-- [ ] option to compile to prg (or do it every time?)
-- [ ] option to autostart emulator after build
-- [ ] option to start emulator in warp mode
 - [ ] detect labels for GOSUB/GOTO
 - [ ] labels (goto/gosub) translated to line numbers
 - [ ] detect VARIABLES
 - [ ] variables translated to AA AB AC AD
+- [ ] labels + code can be on the same line
+- [ ] output to file
+- [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
+- [ ] option to create .prg file
+- [ ] optional config block on top of master file
+- [ ] set preferred steps between line numbers (1, 5, 10, ..)
+- [ ] option to autostart emulator after build
+- [ ] option to start emulator in warp mode
 - [ ] instructions on how to install as a global shellscript
 - [ ] add verbose help option
 
