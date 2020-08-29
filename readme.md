@@ -87,6 +87,41 @@ Converted code:
 35 print "hello " a$
 ```
 
+### Labels
+
+It is possible to define labels in the code, and reference these in `GOTO` and `GOSUB` commands. No need to keep track of line numbers.
+
+Source code:
+```
+for i=0 to 3
+    gosub {LABEL hello}
+    gosub {LABEL number}
+next i
+end
+
+{LABEL hello}
+    print "hello ";
+    return
+
+{LABEL number}
+    print i
+    return
+```
+
+Converted code:
+```
+10 for i=0 to 3
+15 gosub 35
+20 gosub 45
+25 next i
+30 end
+35 print "hello ";
+40 return
+45 print i
+50 return
+```
+
+If a label is defined more than once, the converter displays an error.
 
 ## Planned features / TODOs / DONEs
 
@@ -98,8 +133,8 @@ Converted code:
 - [x] master file can have indentation
 - [x] convert: remove comments
 - [x] support /* comments */ and // comments
-- [ ] detect labels for GOSUB/GOTO
-- [ ] labels (goto/gosub) translated to line numbers
+- [x] detect labels for GOSUB/GOTO
+- [x] labels (goto/gosub) translated to line numbers
 - [ ] detect VARIABLES
 - [ ] variables translated to AA AB AC AD
 - [ ] labels + code can be on the same line

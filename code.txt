@@ -11,7 +11,14 @@ poke 53281,0
 
 /* display the message */
 a$ = "world"
-rem printing the variable
-for i=0 to 4
-    print "hello " a$ ". ";
+for i=0 to 3
+    gosub {LABEL output}
 next i
+print
+print "done"
+end
+
+
+{LABEL output}
+    print "hello " a$ ". ";
+    return

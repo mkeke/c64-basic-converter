@@ -30,6 +30,7 @@ function convert() {
     let code = [];
     let lineNumber = 10;
     let isCommentBlock = false;
+    let labels = {};
     for(let i=0; i<sourceFile.length; i++) {
         let line = sourceFile[i];
 
@@ -52,10 +53,31 @@ function convert() {
             line = "";
         }
 
+        // look for label definitions
+        let matches = /^\{LABEL ([^\}]+)}/.exec(line);
+        if (matches !== null && matches.length == 2) {
+            let label = matches[1];
+            // if label is already defined, display error
+            if(labels[label]) {
+                log(`ERROR: label ${label} is already defined]`);
+            }
+
+            // assign label to the next line number
+            labels[label] = lineNumber;
+            line = "";
+        }
+
         // create line numbers
         if (!isCommentBlock && line != "") {
             code.push(lineNumber + " " + line);
             lineNumber += 5;
+        }
+    }
+
+    // replace all label references with line numbers
+    for(let i in code) {
+        for(let x in labels) {
+            code[i] = code[i].replace(`{LABEL ${x}}`, labels[x]);
         }
     }
 
