@@ -12,4 +12,6 @@ poke 53281,0
 /* display the message */
 a$ = "world"
 rem printing the variable
-print "hello " a$
+for i=0 to 4
+    print "hello " a$ ". ";
+next i

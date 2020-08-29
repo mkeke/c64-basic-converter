@@ -39,14 +39,18 @@ Source code:
 poke 53280,0
 poke 53281,0
 
-   print "hello"
+for a=0 to 4
+   print "hello ";
+next a
 ```
 
 Converted code:
 ```
 10 poke 53280,0
 15 poke 53281,0
-20 print "hello"
+20 for a=0 to 4
+25 print "hello ";
+30 next a
 ```
 
 ### Comments
@@ -94,19 +98,19 @@ Converted code:
 - [x] master file can have indentation
 - [x] convert: remove comments
 - [x] support /* comments */ and // comments
-- [ ] instructions on how to install as a global script
 - [ ] labels + code can be on the same line
 - [ ] configurable steps between line numbers (1, 5, 10, ..)
 - [ ] convert: save to file
 - [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
 - [ ] config (optional) on top of master file
 - [ ] option to compile to prg (or do it every time?)
-- [ ] option to autostart x64 after build
-- [ ] option to start x64 in warp mode
+- [ ] option to autostart emulator after build
+- [ ] option to start emulator in warp mode
 - [ ] detect labels for GOSUB/GOTO
 - [ ] labels (goto/gosub) translated to line numbers
 - [ ] detect VARIABLES
 - [ ] variables translated to AA AB AC AD
+- [ ] instructions on how to install as a global shellscript
 - [ ] add verbose help option
 
 No, there will be no validation of the actual BASIC code!
