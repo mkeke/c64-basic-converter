@@ -5,10 +5,11 @@ $ node z.basic.js [-w|-watch] [-h|-help] <code.txt>
 ```
 
 Converts a formatted text file to C64 BASIC.
+The converted BASIC code can then be copy/pasted into the emulator, making the development process a whole lot easier.
 
 ## Installation
 
-nodejs must be installed. https://nodejs.org/en/
+nodejs must be installed to be able to run this script. https://nodejs.org/en/
 
 ## Command line options
 
