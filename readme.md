@@ -201,22 +201,6 @@ We see that the custom variable `>borderAddr` is converted to `zz`, but that is 
 No, there will be no validation of the actual BASIC code!
 
 
-## Thoughts about variables
-
-Variables could be defined like this:
-```
-let {VAR name} = "world"
-print "hello " {VAR name};
-```
-
-And be converted to this:
-```
-10 let AA = "world"
-15 print "hello " AA;
-```
-
-Maybe it's a bit annoying to write all the `{VAR ..}` statements every time. Perhaps a simpler prefix/wrapper is better.
-
 ## Thoughts about a config block
 
 The master file might have a config block at the top, in which it's possible to set different things.
