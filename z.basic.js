@@ -142,7 +142,7 @@ function convert() {
 }
 
 /*
-    watchWile
+    watchFile
     Watch file for changes, and trigger convert()
 */
 function watchFile() {
