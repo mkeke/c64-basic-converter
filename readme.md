@@ -147,12 +147,12 @@ It is possible to use custom, descriptive variable names in the master code. A c
 
 Source code:
 ```
->borderAddr = 53280
+>borderAdr = 53280
 >colorRed = 2
 >charMem = 1024
 >colorMem = 55296
 
-poke >borderAddr,>colorRed
+poke >borderAdr,>colorRed
 poke >charMem,19
 poke >colorMem,1
 ```
@@ -172,10 +172,10 @@ It's worth noting that the converter will not discover problems related to the c
 
 Consider the following code:
 ```
->borderAddr = 53280
+>borderAdr = 53280
 zz = 53281
 
-poke >borderAddr,2
+poke >borderAdr,2
 ```
 
 This will be converted to the following:
@@ -185,7 +185,7 @@ This will be converted to the following:
 20 poke zz,2
 ```
 
-We see that the custom variable `>borderAddr` is converted to `zz`, but that is also the name of a BASIC variable, making the initial value overwritten.
+We see that the custom variable `>borderAdr` is converted to `zz`, but that is also the name of a BASIC variable, making the initial value overwritten.
 
 ## Planned features / TODOs / DONEs
 
