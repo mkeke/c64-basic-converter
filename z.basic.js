@@ -6,6 +6,7 @@ const log = (str) => { console.log(str); }
 const params = {
     help: false,
     watch: false,
+    clear: false,
     filename: false,
 }
 
@@ -16,14 +17,17 @@ if (!verifyParams()) {
 convert();
 
 if(params.watch) {
-    log("watching file");
+    log("\nwatching file");
     watchFile();
 }
 
 
 
 function convert() {
-    log("Converting " + params.filename);
+    if(params.clear) {
+        console.clear();
+    }
+    log("Converting " + params.filename + "\n");
 
     // read source file into array
     let sourceFile = fs.readFileSync(params.filename, "utf8").split("\n");
@@ -162,12 +166,16 @@ function verifyParams() {
             case "-watch":
                 params.watch = true;
                 break;
+            case "-c":
+            case "-clear":
+                params.clear = true;
+                break;
         }
     }
     params.filename = process.argv[process.argv.length-1];
 
     if (params.help) {
-        log("usage:\n  node z.basic.js [-w|-watch] [-h|-help] <filename>");
+        log("usage:\n  node z.basic.js [-w|-watch] [-c|-clear] [-h|-help] <filename>");
         return false;
     }
 

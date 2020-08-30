@@ -1,7 +1,7 @@
 # C64 BASIC converter
 
 ```
-$ node z.basic.js [-w|-watch] [-h|-help] <code.txt>
+$ node z.basic.js [-w|-watch] [-c|-clear] [-h|-help] <code.txt>
 ```
 
 Converts a formatted text file to C64 BASIC.
@@ -14,6 +14,8 @@ nodejs must be installed to be able to run this script. https://nodejs.org/en/
 ## Command line options
 
 Option `-w` (or `-watch`) watches for changes to the input file, and triggers conversion.
+
+Option `-c` (or `-clear`) clears the console before outputting the converted code. This is useful in combination with the watch option.
 
 Option `-h` (or `-help`) displays help about the converter.
 
