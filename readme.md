@@ -1,30 +1,40 @@
 # C64 BASIC converter
 
+Converting a file with "enhanced" C64 BASIC code into C64 BASIC.
+
+Synopsis:
 ```
-$ node z.basic.js [-w|-watch] [-c|-clear] [-h|-help] <code.txt>
+$ node z.basic.js [-w] [-o] [-c] [-h] <code.txt>
 ```
 
-Converts a formatted text file to C64 BASIC.
-The converted BASIC code can then be copy/pasted into the emulator (or further converted to a .prg file), making the development process a whole lot easier.
+Converts a nicely formatted `code.txt` to C64 BASIC, saving it as `code.basic.txt`, and optionally outputs it to the terminal.
+
+The converted BASIC code can be copy/pasted into the emulator (or further converted to a .prg file).
+
+Options:
+- `<code.txt>` a text file with the nicely formatted master code (see possibilities below)
+- `-w` watches for changes to the file, and triggers conversion
+- `-o` outputs the converted code to the terminal
+- `-c` clears the terminal before outputting. This is useful in combination with the watch option
+- `-h` or `--help` displays help about the converter
+
 
 ## Installation
 
 nodejs must be installed to be able to run this script. https://nodejs.org/en/
 
-## Command line options
-
-Option `-w` (or `-watch`) watches for changes to the input file, and triggers conversion.
-
-Option `-c` (or `-clear`) clears the console before outputting the converted code. This is useful in combination with the watch option.
-
-Option `-h` (or `-help`) displays help about the converter.
-
 
 ## Code formatting possibilities
 
+- Automatic line numbers
+- Line feed and indentation
+- Comments
+- Labels
+- Variables 
+
 ### Automatic line numbers
 
-No need to write line numbers. It is done automatically.
+No need to write line numbers in the master file. They're added automatically by the converter.
 
 Source code:
 ```
@@ -40,7 +50,7 @@ Converted code:
 
 ### Line feed and indentation
 
-The code can be structured nicely with linefeed and indentation. This will be ignored by the converter.
+The code can be structured nicely with linefeed and indentation. This will be removed by the converter.
 
 Source code:
 ```
@@ -63,7 +73,7 @@ Converted code:
 
 ### Comments
 
-The master code can have single-line and multi-line comments. These will be removed by the converter. However, `REM` statements will be kept as part of the final code.
+The master code can have single-line and multi-line comments. These will be removed by the converter. However, `REM` statements will end up in the final code.
 
 Source code:
 ```
@@ -102,16 +112,16 @@ It is possible to define labels in the code, and reference these in `GOTO` and `
 Source code:
 ```
 for i=0 to 3
-    gosub @hello
-    gosub @number
+    gosub @printHello
+    gosub @printNumber
 next i
 end
 
-@hello
+@printHello
     print "hello ";
     return
 
-@number
+@printNumber
     print i
     return
 ```
@@ -191,8 +201,10 @@ We see that the custom variable `>borderAddr` is converted to `zz`, but that is 
 - [x] labels (goto/gosub) translated to line numbers
 - [x] detect VARIABLES
 - [x] variables translated to AA AB AC AD
-- [ ] output to file
-- [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
+- [x] output to file
+- [x] auto-postfix output file (code.txt -> code.basic.txt)
+- [x] option to output converted code in the terminal
+- [x] option to clear screen before outputting
 - [ ] option to create .prg file
 - [ ] optional config block on top of master file
 - [ ] set preferred steps between line numbers (1, 5, 10, ..)
@@ -202,12 +214,17 @@ We see that the custom variable `>borderAddr` is converted to `zz`, but that is 
 - [ ] add verbose help option
 - [ ] add lookup tables for colors, POKEs, CHR$ etc
 
-No, there will be no validation of the actual BASIC code!
+No, there will be no validation of the actual BASIC code! :-D
+
+
+## Bugs and issues
+
+I'll try to keep this section empty.
 
 
 ## Thoughts about a config block
 
-The master file might have a config block at the top, in which it's possible to set different things.
+It would be nice to have a config block at the top of the master file, to be able to tweak how the converter behaves. For instance toggling a launchEmulator option.
 
 Something like this, that can be easily converted to JSON:
 ```
@@ -220,7 +237,7 @@ Something like this, that can be easily converted to JSON:
 ```
 
 
-## misc notes
+## Misc notes (for later)
 
 convert code.txt to .prg
 ```

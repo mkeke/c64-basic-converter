@@ -1,12 +1,12 @@
 // convert from txt to basic
 const fs = require("fs");
-const log = (str) => { console.log(str); }
 
 // define default params
 const params = {
-    help: false,
     watch: false,
+    output: false,
     clear: false,
+    help: false,
     filename: false,
 }
 
@@ -14,20 +14,19 @@ if (!verifyParams()) {
     return;
 }
 
+// define output filename code.txt -> code.basic.txt
+params.outfile = params.filename.replace(/(\.[^\.]+)$/, ".basic$1");
+
 convert();
 
 if(params.watch) {
-    log("\nwatching file");
     watchFile();
 }
 
 
 
 function convert() {
-    if(params.clear) {
-        console.clear();
-    }
-    log("Converting " + params.filename + "\n");
+    log(`reading '${params.filename}'`, true);
 
     // read source file into array
     let sourceFile = fs.readFileSync(params.filename, "utf8").split("\n");
@@ -122,10 +121,24 @@ function convert() {
         }
     }
 
-    // output
-    for (i in code) {
-        log(code[i]);
+    log(`found ${Object.keys(labels).length} labels, ${Object.keys(vars).length} variables`, true);
+
+    if (params.output) {
+        // output to console        
+        if(params.clear) {
+            console.clear();
+        } else {
+            log("");
+        }
+        for (i in code) {
+            log(code[i]);
+        }
+        log("");
     }
+
+    // save to file
+    log(`writing '${params.outfile}'`, true);
+    fs.writeFileSync(params.outfile, code.join("\n") + "\n", "utf8");
 }
 
 /*
@@ -143,7 +156,7 @@ function watchFile() {
                 fsWait = false;
             }, 100);
 
-            log("File changed\n");
+            log("File changed");
             convert();
         }
     });
@@ -163,11 +176,12 @@ function verifyParams() {
                 params.help = true;
                 break;
             case "-w":
-            case "-watch":
                 params.watch = true;
                 break;
+            case "-o":
+                params.output = true;
+                break;
             case "-c":
-            case "-clear":
                 params.clear = true;
                 break;
         }
@@ -175,7 +189,7 @@ function verifyParams() {
     params.filename = process.argv[process.argv.length-1];
 
     if (params.help) {
-        log("usage:\n  node z.basic.js [-w|-watch] [-c|-clear] [-h|-help] <filename>");
+        log("usage:\n  node z.basic.js [-w] [-o] [-c] [-h|-help] <filename>");
         return false;
     }
 
@@ -209,4 +223,24 @@ function generateAvailableVarNames() {
     }
 
     return vars;
+}
+
+function log (str, showTime) { 
+    if (showTime === undefined) {
+        showTime = false;
+    }
+    if(showTime) {
+        let now = new Date();
+
+        let t = now.getHours() < 10 ? '0':'';
+        t += now.getHours() + ":";
+        t += now.getMinutes() < 10 ? '0':'';
+        t += now.getMinutes() + ":";
+        t += now.getSeconds() < 10 ? '0':'';
+        t += now.getSeconds();
+
+        console.log(`[${t}] ${str}`); 
+    } else {
+        console.log(str);
+    }
 }

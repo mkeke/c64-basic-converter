@@ -1,6 +1,6 @@
 >clearChar=147
->borderAddr=53280
->screenAddr=53281
+>borderAdr=53280
+>screenAdr=53281
 
 // clear screen
 print chr$(>clearChar)
@@ -8,13 +8,14 @@ print chr$(>clearChar)
 /*
     set screen colors
 */
->bordercolor = 0
-poke >borderAddr,>bordercolor
-poke >screenAddr,>bordercolor
+>bordercolor = 4
+poke >borderAdr,>bordercolor
+poke >screenAdr,>bordercolor
 
 /* display the message */
 a$ = "world"
-for i=0 to 3
+for i=0 to 14
+    poke >borderAdr,i
     gosub @outputString
     gosub @outputNum
 next i
