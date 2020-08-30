@@ -221,7 +221,7 @@ No, there will be no validation of the actual BASIC code! :-D
 
 I'll try to keep this section fairly empty.
 
-- [ ] labels and variables inside a multi-line comment will still be detected. This can lead to mismatched line numbers. We need to ensure that we're not inside a comment block before handling labels and variables.
+- labels and variables inside a multi-line comment will still be detected. This can lead to mismatched line numbers. We need to ensure that we're not inside a comment block before handling labels and variables.
 
 
 ## Thoughts about a config block
