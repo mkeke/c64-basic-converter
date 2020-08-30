@@ -5,7 +5,7 @@ $ node z.basic.js [-w|-watch] [-h|-help] <code.txt>
 ```
 
 Converts a formatted text file to C64 BASIC.
-The converted BASIC code can then be copy/pasted into the emulator, making the development process a whole lot easier.
+The converted BASIC code can then be copy/pasted into the emulator (or further converted to a .prg file), making the development process a whole lot easier.
 
 ## Installation
 
