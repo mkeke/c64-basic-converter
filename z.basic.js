@@ -173,6 +173,7 @@ function verifyParams() {
         switch(param) {
             case "-h":
             case "-help":
+            case "--help":
                 params.help = true;
                 break;
             case "-w":
