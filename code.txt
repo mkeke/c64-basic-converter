@@ -1,13 +1,16 @@
+>clearChar=147
+>borderAddr=53280
+>screenAddr=53281
+
 // clear screen
-print chr$(147)
+print chr$(>clearChar)
 
 /*
     set screen colors
-    53280 is the border
-    53281 is the screen
 */
-poke 53280,0
-poke 53281,0
+>bordercolor = 0
+poke >borderAddr,>bordercolor
+poke >screenAddr,>bordercolor
 
 /* display the message */
 a$ = "world"
@@ -18,7 +21,6 @@ next i
 print
 print "done"
 end
-
 
 @outputString
     print "hello " a$;

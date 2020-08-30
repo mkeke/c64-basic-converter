@@ -128,6 +128,52 @@ Converted code:
 
 If a label is defined more than once, the converter displays an error.
 
+### Variables
+
+It is possible to use custom, descriptive variable names in the master code. A custom variable must start with a `>` and can be in the range `a-zA-Z0-9`. These variables will be translated to `zz`, `zy`, `zx` and so on by the converter. Certain reserved words are of course not used as variable names.
+
+Source code:
+```
+>borderAddr = 53280
+>colorRed = 2
+>charMem = 1024
+>colorMem = 55296
+
+poke >borderAddr,>colorRed
+poke >charMem,19
+poke >colorMem,1
+```
+
+Converted code:
+```
+10 zz = 53280
+15 zy = 2
+20 zx = 1024
+25 zw = 55296
+30 poke zz,zy
+35 poke zx,19
+40 poke zw,1
+```
+
+It's worth noting that the converter will not discover problems related to the combination of custom variables and BASIC variables.
+
+Consider the following code:
+```
+>borderAddr = 53280
+zz = 53281
+
+poke >borderAddr,2
+```
+
+This will be converted to the following:
+```
+10 zz = 53280
+15 zz = 53281
+20 poke zz,2
+```
+
+We see that the custom variable `>borderAddr` is converted to `zz`, but that is also the name of a BASIC variable, making the initial value overwritten.
+
 ## Planned features / TODOs / DONEs
 
 - [x] convert: remove empty lines
@@ -140,8 +186,8 @@ If a label is defined more than once, the converter displays an error.
 - [x] support /* comments */ and // comments
 - [x] detect labels for GOSUB/GOTO
 - [x] labels (goto/gosub) translated to line numbers
-- [ ] detect VARIABLES
-- [ ] variables translated to AA AB AC AD
+- [x] detect VARIABLES
+- [x] variables translated to AA AB AC AD
 - [ ] output to file
 - [ ] auto-prefix or postfix output file (code.txt -> code.c64basic.txt)
 - [ ] option to create .prg file

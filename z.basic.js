@@ -2,7 +2,6 @@
 const fs = require("fs");
 const log = (str) => { console.log(str); }
 
-
 // define default params
 const params = {
     help: false,
@@ -13,6 +12,7 @@ const params = {
 if (!verifyParams()) {
     return;
 }
+
 convert();
 
 if(params.watch) {
@@ -32,6 +32,9 @@ function convert() {
     let lineNumber = 10;
     let isCommentBlock = false;
     let labels = {};
+    let availableVars = generateAvailableVarNames();
+    let vars = {};
+
     for(let i=0; i<sourceFile.length; i++) {
         let line = sourceFile[i];
 
@@ -54,7 +57,9 @@ function convert() {
             line = "";
         }
 
-        // look for label definitions
+        /*
+            look for label definitions
+        */
         let matches = /^\@(.+)$/.exec(line);
         if (matches != null && matches.length == 2) {
             let label = matches[1];
@@ -68,6 +73,28 @@ function convert() {
             labels[label] = lineNumber;
             line = "";
         }
+
+
+        /*
+            Look for variables.
+            There can be multiple variables on a single line
+            A variable reference starts with a '>'
+            and can be any characters in the range a-zA-Z0-9
+            The |$ is needed to detect variables at the end of a line
+        */
+        let varExp = /\>([a-zA-Z0-9]+)([^a-zA-Z0-9]|$)/g;
+        let varMatches;
+        do{
+            varMatches = varExp.exec(line);
+            if(varMatches) {
+                let varName = varMatches[1];
+                // if var is not present in vars{}
+                // then pop the next available name from availableVars
+                if(vars[varName] === undefined) {
+                    vars[varName] = availableVars.pop();
+                }
+            }
+        } while (varMatches);
 
         // create line numbers
         if (!isCommentBlock && line != "") {
@@ -83,11 +110,18 @@ function convert() {
         }
     }
 
+    // replace all variable references with two character names
+    for(let i in code) {
+        for(let x in vars) {
+            let varExp = new RegExp('\>'+x+'([^a-zA-Z0-9]|$)', 'g');
+            code[i] = code[i].replace(varExp, vars[x] + "$1");
+        }
+    }
+
     // output
     for (i in code) {
         log(code[i]);
     }
-
 }
 
 /*
@@ -143,4 +177,28 @@ function verifyParams() {
     }
 
     return true;
+}
+
+/*
+    generate a stack of variable names with 2 characters,
+    excluding reserved words if, or, go, to, fn, ti, st
+*/
+function generateAvailableVarNames() {
+    let vars = [];
+
+    let chars = "abcdefghijklmnopqrstuvwxyz".split("");
+    for(let a in chars) {
+        for(let b in chars) {
+            vars.push(chars[a] + chars[b]);
+        }
+    }
+    let reserved = ['if', 'or', 'go', 'to', 'fn', 'ti', 'st'];
+    for(let i in reserved) {
+        let reservedIndex = vars.indexOf(reserved[i]);
+        if (reservedIndex > -1) {
+            vars.splice(reservedIndex, 1);
+        }
+    }
+
+    return vars;
 }
