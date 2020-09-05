@@ -229,6 +229,8 @@ If a filename is not found, an error is displayed:
 ERROR: include file '_clearscreen.txt' not found
 ```
 
+The include files are currently not being watched by the `-w` option. Only changes to the master file will trigger a new conversion.
+
 The inclusion is done before the conversion process. This way you can define variables before including a file, making a flexible template.
 
 Source code:
