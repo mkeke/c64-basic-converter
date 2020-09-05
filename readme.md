@@ -208,6 +208,8 @@ We see that the custom variable `>borderAdr` is converted to `zz`, but that is a
 - [x] auto-postfix output file (code.txt -> code.basic.txt)
 - [x] option to output converted code in the terminal
 - [x] option to clear screen before outputting
+- [ ] add include function
+- [ ] add constants. replace const with the value.
 - [ ] option to create .prg file
 - [ ] optional config block on top of master file
 - [ ] set preferred steps between line numbers (1, 5, 10, ..)
@@ -215,7 +217,6 @@ We see that the custom variable `>borderAdr` is converted to `zz`, but that is a
 - [ ] option to start emulator in warp mode
 - [ ] instructions on how to install as a global shellscript
 - [ ] add verbose help option
-- [ ] make it possible to work with multiple files, and include them in the master file
 - [ ] add lookup tables for colors, POKEs, CHR$ etc
 
 No, there will be no validation of the actual BASIC code! :-D
