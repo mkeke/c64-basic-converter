@@ -7,6 +7,8 @@ print chr$(>clearChar)
 
 /*
     set screen colors
+@outputNum
+
 */
 >bordercolor = 4
 poke >borderAdr,>bordercolor

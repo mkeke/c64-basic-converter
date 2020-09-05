@@ -105,6 +105,9 @@ Converted code:
 35 print "hello " a$
 ```
 
+Labels and variables inside comments will be ignored.
+
+
 ### Labels
 
 It is possible to define labels in the code, and reference these in `GOTO` and `GOSUB` commands. No need to keep track of line numbers. A label is declared by `@foobar` on a line of its own. To `GOTO` or `GOSUB` a label, just write `goto @foobar`.
@@ -221,8 +224,6 @@ No, there will be no validation of the actual BASIC code! :-D
 ## Bugs and issues
 
 I'll try to keep this section fairly empty.
-
-- labels and variables inside a multi-line comment will still be detected. This can lead to mismatched line numbers. We need to ensure that we're not inside a comment block before handling labels and variables.
 
 
 ## Thoughts about a config block

@@ -26,6 +26,10 @@ if(params.watch) {
 
 
 function convert() {
+    if(params.clear) {
+        console.clear();
+    }
+
     log(`reading '${params.filename}'`, true);
 
     // read source file into array
@@ -60,6 +64,10 @@ function convert() {
             line = "";
         }
 
+        if (isCommentBlock) {
+            continue;
+        }
+
         /*
             look for label definitions
         */
@@ -69,7 +77,7 @@ function convert() {
 
             // if label is already defined, display error
             if(labels[label]) {
-                log(`ERROR: label ${label} is already defined]`);
+                log(`ERROR: label ${label} is already defined`);
             }
 
             // assign label to the next line number
@@ -124,12 +132,8 @@ function convert() {
     log(`found ${Object.keys(labels).length} labels, ${Object.keys(vars).length} variables`, true);
 
     if (params.output) {
-        // output to console        
-        if(params.clear) {
-            console.clear();
-        } else {
-            log("");
-        }
+        // output to console     
+        log("");   
         for (i in code) {
             log(code[i]);
         }
