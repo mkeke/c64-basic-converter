@@ -30,7 +30,8 @@ nodejs must be installed to be able to run this script. https://nodejs.org/en/
 - Line feed and indentation
 - Comments
 - Labels
-- Variables 
+- Variables
+- Include files
 
 ### Automatic line numbers
 
