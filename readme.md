@@ -217,6 +217,7 @@ We see that the custom variable `>borderAdr` is converted to `zz`, but that is a
 - [ ] option to start emulator in warp mode
 - [ ] instructions on how to install as a global shellscript
 - [ ] add verbose help option
+- [ ] better handling of command line params. `-owc` instead of `-o -w -c`
 - [ ] add lookup tables for colors, POKEs, CHR$ etc
 
 No, there will be no validation of the actual BASIC code! :-D
