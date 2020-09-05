@@ -1,0 +1,4 @@
+>border = 53280
+>color = 0
+
+poke >border,>color

@@ -26,6 +26,13 @@ if(params.watch) {
 
 
 function convert() {
+    let code = [];
+    let lineNumber = 10;
+    let isCommentBlock = false;
+    let labels = {};
+    let availableVars = generateAvailableVarNames();
+    let vars = {};
+
     if(params.clear) {
         console.clear();
     }
@@ -35,13 +42,34 @@ function convert() {
     // read source file into array
     let sourceFile = fs.readFileSync(params.filename, "utf8").split("\n");
 
-    let code = [];
-    let lineNumber = 10;
-    let isCommentBlock = false;
-    let labels = {};
-    let availableVars = generateAvailableVarNames();
-    let vars = {};
+    /*
+        look for @include statements
+        replace the @include statements with the contents of the file
+    */
+    for(let i=0; i<sourceFile.length; i++) {
+        let line = sourceFile[i];
 
+        let matches = /^\@include (.+)$/.exec(line);
+        if (matches != null && matches.length == 2) {
+            let includeFilename = matches[1];
+
+            if(!fs.existsSync(includeFilename)) {
+                log(`ERROR: include file '${includeFilename}' not found`);
+                return;
+            }
+
+            log("including file: " + includeFilename, true);
+            let includeFile = fs.readFileSync(includeFilename, "utf8").split("\n");
+
+            // remove current include statement and add to sourcefile
+            sourceFile[i] = "";
+            sourceFile.splice(i+1, 0, ...includeFile);
+        }
+    }
+
+    /*
+        examine each line of the complete code
+    */
     for(let i=0; i<sourceFile.length; i++) {
         let line = sourceFile[i];
 
@@ -65,6 +93,7 @@ function convert() {
         }
 
         if (isCommentBlock) {
+            // skip to next line
             continue;
         }
 

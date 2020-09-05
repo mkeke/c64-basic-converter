@@ -1,0 +1,21 @@
+gosub @clearScreen
+
+for i=0 to 3
+   gosub @printText
+   gosub @printNumber
+next i
+end
+
+@clearScreen
+   poke 53280,0
+   poke 53281,0
+   print chr$(147);
+   return
+
+@printText
+   print "hello";
+   return
+
+@printNumber
+   print i
+   return

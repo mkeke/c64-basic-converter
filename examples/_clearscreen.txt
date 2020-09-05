@@ -1,0 +1,11 @@
+/*
+    clear screen template
+
+    assumes the following variables are defined:
+    bgcol: the background color code
+    txtcol: the petscii text color code
+*/
+
+poke53280,>bgcol
+poke53281,>bgcol
+print chr$(>txtcol) chr$(147);

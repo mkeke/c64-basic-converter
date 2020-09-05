@@ -1,0 +1,6 @@
+// define variables for the included template
+>bgcol = 0
+>txtcol = 5
+@include _clearscreen.txt
+
+print "hello"

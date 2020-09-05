@@ -1,0 +1,2 @@
+poke 53280,0
+print "hello"

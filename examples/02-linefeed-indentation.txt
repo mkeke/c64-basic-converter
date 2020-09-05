@@ -1,0 +1,6 @@
+poke 53280,0
+poke 53281,0
+
+for a=0 to 4
+   print "hello ";
+next a

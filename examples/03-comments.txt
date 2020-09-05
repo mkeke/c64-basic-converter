@@ -1,0 +1,10 @@
+// this comment will be ignored
+
+/* and this */
+
+/*
+   and this
+*/
+
+rem this will end up in the converted code
+print "hello"

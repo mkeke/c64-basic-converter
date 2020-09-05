@@ -190,6 +190,83 @@ This will be converted to the following:
 
 We see that the custom variable `>borderAdr` is converted to `zz`, but that is also the name of a BASIC variable, making the initial value overwritten.
 
+### Include files
+
+Your project can consist of multiple files. The master file can include files wherever needed.
+
+Source code:
+```
+@include _clearscreen.txt
+
+print "hello"
+```
+
+Separate file `_clearscreen.txt`:
+```
+/*
+    black screen, white text, cursor on top
+*/
+
+poke53280,0
+poke53281,0
+print chr$(5) chr$(147);
+
+```
+
+Converted code:
+```
+10 poke53280,0
+15 poke53281,0
+20 print chr$(5) chr$(147);
+25 print "hello"
+```
+
+The included files can have include statements (if you insist).
+
+If a filename is not found, an error is displayed:
+```
+ERROR: include file '_clearscreen.txt' not found
+```
+
+The inclusion is done before the conversion process. This way you can define variables before including a file, making a flexible template.
+
+Source code:
+```
+>bgcol = 0
+>txtcol = 5
+@include _clearscreen.txt
+
+print "hello"
+```
+
+Separate file `_clearscreen.txt`:
+```
+/*
+    clear screen template
+
+    assumes the following variables are defined:
+    bgcol: the background color code
+    txtcol: the petscii text color code
+*/
+
+poke53280,>bgcol
+poke53281,>bgcol
+print chr$(>txtcol) chr$(147);
+
+```
+
+Converted code:
+```
+10 zz = 0
+15 zy = 5
+20 poke53280,zz
+25 poke53281,zz
+30 print chr$(zy) chr$(147);
+35 print "hello"
+```
+
+
+
 ## Planned features / TODOs / DONEs
 
 - [x] convert: remove empty lines
@@ -208,8 +285,9 @@ We see that the custom variable `>borderAdr` is converted to `zz`, but that is a
 - [x] auto-postfix output file (code.txt -> code.basic.txt)
 - [x] option to output converted code in the terminal
 - [x] option to clear screen before outputting
-- [ ] add include function
+- [x] add include function
 - [ ] add constants. replace const with the value.
+- [ ] option to NOT write to file
 - [ ] option to create .prg file
 - [ ] optional config block on top of master file
 - [ ] set preferred steps between line numbers (1, 5, 10, ..)
