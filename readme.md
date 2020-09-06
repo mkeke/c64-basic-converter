@@ -318,7 +318,7 @@ A constant is defined on a single line like this:
 <pokeBlack> = 0
 ```
 
-Constant names must be in the range `a-zA-Z0-9`. Tha value can be anything you'd like. The converter will replace all constants with their corresponding value.
+Constant names must be in the range `a-zA-Z0-9`. The value can be anything you want. The converter will replace all constants with their corresponding value.
 
 Source code:
 ```
