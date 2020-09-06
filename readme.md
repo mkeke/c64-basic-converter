@@ -44,7 +44,7 @@ alias z.basic='node ~/bin/z.basic.js'
 
 (I prefer to prefix my scripts with `z.`, but call it what you like)
 
-Verify that your system is using `.bash_aliases` file. Edit and add the following lines if not already present:
+Verify that your system is using `.bash_aliases` file. Edit `~/.bashrc` and add the following lines if not already present:
 ```
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -319,8 +319,8 @@ Include files can be organised in a separate folder if you like:
 - [ ] converting
     - [ ] add constants. replace all constants with the defined value
 - [ ] program flow
-    - [ ] detect and report gosub/goto to undefined labels
-    - [ ] add included files to watch list
+    - [ ] detect and report gosub/goto to undefined labels
+    - [ ] add included files to watch list
 - [ ] command line options
     - [ ] option: don't write to file
     - [ ] option: create .prg file
