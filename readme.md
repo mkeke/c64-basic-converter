@@ -67,6 +67,7 @@ $ z.basic [options] <code.txt>
 - Labels
 - Variables
 - Working with multiple files
+- Constants
 
 ### Automatic line numbers
 
@@ -128,7 +129,6 @@ poke 53281,0
 a$ = "world"
 rem printing the variable
 print "hello " a$
-
 ```
 
 Converted code:
@@ -250,7 +250,6 @@ Separate file `_clearscreen.txt`:
 poke53280,0
 poke53281,0
 print chr$(5) chr$(147);
-
 ```
 
 Converted code:
@@ -294,7 +293,6 @@ Separate file `_clearscreen.txt`:
 poke53280,>bgcol
 poke53281,>bgcol
 print chr$(>txtcol) chr$(147);
-
 ```
 
 Converted code:
@@ -313,13 +311,95 @@ Include files can be organised in a separate folder if you like:
 @include templates/drawlogo.txt
 ```
 
+### Constants
+
+A constant is defined on a single line like this:
+```
+<pokeBlack> = 0
+```
+
+Constant names must be in the range `a-zA-Z0-9`. Tha value can be anything you'd like. The converter will replace all constants with their corresponding value.
+
+Source code:
+```
+<border> = 53280
+<pokeBlack> = 0
+<name> = commodore 64
+
+poke <border>,<pokeBlack>
+print "hello <name>"
+```
+
+Converted code:
+```
+10 poke 53280,0
+15 print "hello commodore 64"
+```
+
+Constants are not converted into variable names, and will not affect the size of the generated code. Therefore you can have a file with constants for memory addresses, color codes, character codes etc, and simply refer to them by the name of the constant.
+
+Separate file `_constants.txt`:
+```
+<border> = 53280
+<screen> = 53281
+<chrClear> = 147
+
+/* poke colors */
+<pokeBlack> = 0
+<pokeWhite> = 1
+<pokeRed> = 2
+// etc..
+
+/* character colors */
+<chrBlack> = 144
+<chrWhite> = 5
+<chrRed> = 28
+<chrCyan> = 159
+// etc..
+```
+
+Source code:
+```
+@include _constants.txt
+
+poke <border>,<pokeBlack>
+poke <screen>,<pokeRed>
+
+print chr$(<chrCyan>) chr$(<chrClear>);
+
+print "hello"
+```
+
+Converted code:
+```
+10 poke 53280,0
+15 poke 53281,2
+20 print chr$(159) chr$(147);
+25 print "hello"
+```
+
+Side note: The constant value can contain basic code. Even references to `>variables`. The replacement of constants is done before the conversion, so anything is possible really. This can get ugly, but when used wisely the constants can be placeholders for short code snippets.
+
+Example:
+```
+<clrscr> = print chr$(147);
+
+<clrsrc>
+print "hello"
+```
+
+Converted code:
+```
+10 print chr$(147);
+15 print "hello"
+```
+
 
 ## Planned features / TODOs
 
-- [ ] converting
-    - [ ] add constants. replace all constants with the defined value
 - [ ] program flow
     - [ ] detect and report gosub/goto to undefined labels
+    - [ ] detect and report undefined constants
     - [ ] add included files to watch list
 - [ ] command line options
     - [ ] option: don't write to file

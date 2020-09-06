@@ -37,6 +37,7 @@ function convert() {
     let labels = {};
     let availableVars = generateAvailableVarNames();
     let vars = {};
+    let consts = {};
 
     if(params.clear) {
         console.clear();
@@ -71,6 +72,20 @@ function convert() {
             sourceFile.splice(i+1, 0, ...includeFile);
         }
     }
+
+    /*
+        look for constants on a line of its own
+        <pokeBlack> = 0
+        <foobar> = hello there
+    */
+    for(let i=0; i<sourceFile.length; i++) {
+        let line = sourceFile[i];
+        let matches = /^<([a-zA-Z0-9]+)> *= *(.+)$/.exec(line);
+        if(matches != null && matches.length == 3) {
+            consts[matches[1]] = matches[2];
+            sourceFile[i] = "";
+        }
+    }    
 
     /*
         examine each line of the complete code
@@ -149,6 +164,13 @@ function convert() {
         }
     }
 
+    // replace all constant references with values
+    for(let i in code) {
+        for(let x in consts) {
+            code[i] = code[i].replace(`<${x}>`, consts[x]);
+        }
+    }
+
     // replace all label references with line numbers
     for(let i in code) {
         for(let x in labels) {
@@ -164,7 +186,7 @@ function convert() {
         }
     }
 
-    log(`found ${Object.keys(labels).length} labels, ${Object.keys(vars).length} variables`, true);
+    log(`found ${Object.keys(labels).length} labels, ${Object.keys(vars).length} variables, ${Object.keys(consts).length} constants`, true);
 
     if (params.output) {
         // output to console     

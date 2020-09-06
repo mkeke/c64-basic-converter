@@ -1,0 +1,44 @@
+/*
+    constants
+*/
+
+// common character codes
+<chrClear> = 147
+<border> = 53280
+<screen> = 53281
+
+// poke colors
+<pokeBlack> = 0
+<pokeWhite> = 1
+<pokeRed> = 2
+<pokeCyan> = 3
+<pokePurple> = 4
+<pokeGreen> = 5
+<pokeBlue> = 6
+<pokeYellow> = 7
+<pokeOrange> = 8
+<pokeBrown> = 9
+<pokePink> = 10
+<pokeDarkGrey> = 11
+<pokeGrey> = 12
+<pokeLightGreen> = 13
+<pokeLightBlue> = 14
+<pokeLightGrey> = 15
+
+// character colors
+<chrBlack> = 144
+<chrWhite> = 5
+<chrRed> = 28
+<chrCyan> = 159
+<chrPurple> = 156
+<chrGreen> = 30
+<chrBlue> = 31
+<chrYellow> = 158
+<chrOrange> = 129
+<chrBrown> = 149
+<chrPink> = 150
+<chrDarkGrey> = 151
+<chrGrey> = 152
+<chrLightGreen> = 153
+<chrLightBlue> = 154
+<chrLightGrey> = 155

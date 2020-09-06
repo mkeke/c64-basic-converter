@@ -1,0 +1,8 @@
+@include _constants.txt
+
+poke <border>,<pokeBlack>
+poke <screen>,<pokeRed>
+
+print chr$(<chrCyan>) chr$(<chrClear>);
+
+print "hello"
