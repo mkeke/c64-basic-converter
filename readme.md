@@ -4,15 +4,15 @@ Converting a file with "enhanced" C64 BASIC code into C64 BASIC.
 
 Synopsis:
 ```
-$ node z.basic.js [-w] [-o] [-c] [-h] <code.txt>
+$ node z.basic.js [options] <code.txt>
 ```
 
-Converts a nicely formatted `code.txt` to C64 BASIC, saving it as `code.basic.txt`, and optionally outputs it to the terminal.
+Converts a nicely formatted `code.txt` to C64 BASIC, saving it as `code.txt.bas`, and optionally outputs it to the terminal.
 
 The converted BASIC code can be copy/pasted into the emulator (or further converted to a .prg file).
 
 Options:
-- `<code.txt>` a text file with the nicely formatted master code (see possibilities below)
+- `<code.txt>` **required** a text file with the nicely formatted master code (see possibilities below)
 - `-w` watches for changes to the file, and triggers conversion
 - `-o` outputs the converted code to the terminal
 - `-c` clears the terminal before outputting. This is useful in combination with the watch option
@@ -21,7 +21,42 @@ Options:
 
 ## Installation
 
-nodejs must be installed to be able to run this script. https://nodejs.org/en/
+### Node.js
+
+Node.js must be installed to be able to run this script. Please consult https://nodejs.org/en/
+
+To install on your preferred Linux diostro, please consult https://github.com/nodesource/distributions/blob/master/README.md
+
+Installing Node.js v12.x on Ubuntu
+```
+$ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+$ sudo apt-get install -y nodejs
+```
+
+### Add as a global terminal command
+
+Copy `z.basic.js` to your `~/bin` folder.
+
+Edit or create `~/.bash_aliases`, adding the following line:
+```
+alias z.basic='node ~/bin/z.basic.js'
+```
+
+(I prefer to prefix my scripts with `z.`, but call it what you like)
+
+Verify that your system is using `.bash_aliases` file. Edit and add the following lines if not already present:
+```
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+```
+
+Restart the terminal.
+
+The script can now be run from anywhere:
+```
+$ z.basic [options] <code.txt>
+```
 
 
 ## Code formatting possibilities
@@ -31,7 +66,7 @@ nodejs must be installed to be able to run this script. https://nodejs.org/en/
 - Comments
 - Labels
 - Variables
-- Include files
+- Working with multiple files
 
 ### Automatic line numbers
 
@@ -143,7 +178,11 @@ Converted code:
 50 return
 ```
 
-If a label is defined more than once, the converter displays an error.
+If a label is defined more than once, the converter displays an error:
+```
+ERROR: label 'printHello' is defined more than once
+```
+
 
 ### Variables
 
@@ -191,9 +230,9 @@ This will be converted to the following:
 
 We see that the custom variable `>borderAdr` is converted to `zz`, but that is also the name of a BASIC variable, making the initial value overwritten.
 
-### Include files
+### Working with multiple files
 
-Your project can consist of multiple files. The master file can include files wherever needed.
+Your project can consist of multiple files. The master file can include files wherever needed by use of the `@include <filename>` function.
 
 Source code:
 ```
@@ -268,38 +307,27 @@ Converted code:
 35 print "hello"
 ```
 
+Include files can be organised in a separate folder if you like:
+```
+@include templates/clearscreen.txt
+@include templates/drawlogo.txt
+```
 
 
-## Planned features / TODOs / DONEs
+## Planned features / TODOs
 
-- [x] convert: remove empty lines
-- [x] convert: add line numbers
-- [x] accept command line params
-- [x] option to watch for changes to master file, trigger build
-- [x] option to display help
-- [x] master file can have indentation
-- [x] convert: remove comments
-- [x] support /* comments */ and // comments
-- [x] detect labels for GOSUB/GOTO
-- [x] labels (goto/gosub) translated to line numbers
-- [x] detect VARIABLES
-- [x] variables translated to AA AB AC AD
-- [x] output to file
-- [x] auto-postfix output file (code.txt -> code.basic.txt)
-- [x] option to output converted code in the terminal
-- [x] option to clear screen before outputting
-- [x] add include function
-- [ ] add constants. replace const with the value.
-- [ ] option to NOT write to file
-- [ ] option to create .prg file
+- [ ] converting
+    - [ ] add constants. replace all constants with the defined value
+- [ ] program flow
+    - [ ] detect and report gosub/goto to undefined labels
+    - [ ] add included files to watch list
+- [ ] command line options
+    - [ ] option: don't write to file
+    - [ ] option: create .prg file
 - [ ] optional config block on top of master file
-- [ ] set preferred steps between line numbers (1, 5, 10, ..)
-- [ ] option to autostart emulator after build
-- [ ] option to start emulator in warp mode
-- [ ] instructions on how to install as a global shellscript
-- [ ] add verbose help option
-- [ ] better handling of command line params. `-owc` instead of `-o -w -c`
-- [ ] add lookup tables for colors, POKEs, CHR$ etc
+    - [ ] config: set preferred steps between line numbers (1, 5, 10, ..)
+    - [ ] config: autostart emulator after build
+    - [ ] config: start emulator in warp mode
 
 No, there will be no validation of the actual BASIC code! :-D
 
@@ -340,4 +368,12 @@ start vice with warp mode enabled
 ```
 $ x64 -warp out.prg
 ```
+
+## C64 references
+
+Commodore 64 PETSCII codes
+https://sta.c64.org/cbm64pet.html
+
+C64 BASIC command reference
+https://www.c64-wiki.com/wiki/BASIC
 

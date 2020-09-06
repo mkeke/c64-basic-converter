@@ -10,12 +10,17 @@ const params = {
     filename: false,
 }
 
+// define reusable help string
+const help = 
+    "usage:\n  node z.basic.js [-w] [-o] [-c] [-h|--help] <filename>\n";
+
+
 if (!verifyParams()) {
     return;
 }
 
-// define output filename code.txt -> code.basic.txt
-params.outfile = params.filename.replace(/(\.[^\.]+)$/, ".basic$1");
+// define output filename code.txt -> code.txt.bas
+params.outfile = params.filename + ".bas";
 
 convert();
 
@@ -106,7 +111,8 @@ function convert() {
 
             // if label is already defined, display error
             if(labels[label]) {
-                log(`ERROR: label ${label} is already defined`);
+                log(`ERROR: label '${label}' is defined more than once`);
+                return;
             }
 
             // assign label to the next line number
@@ -200,6 +206,17 @@ function watchFile() {
     Verify correct params and existing file
 */
 function verifyParams() {
+
+    // the first two elements of argv is "node" and "<name of script>"
+    // remove these from the argv before proceeding
+    process.argv.splice(0,2);
+
+    if(process.argv.length == 0) {
+        log("no arguments");
+        log(help);
+        return false;
+    }
+
     // gather params
     for(let i=0; i<process.argv.length; i++) {
         let param = process.argv[i];
@@ -223,12 +240,13 @@ function verifyParams() {
     params.filename = process.argv[process.argv.length-1];
 
     if (params.help) {
-        log("usage:\n  node z.basic.js [-w] [-o] [-c] [-h|-help] <filename>");
+        log(help);
         return false;
     }
 
     if (!fs.existsSync(params.filename)) {
         log("file not found or not specified.")
+        log(help);
         return false;
     }
 
