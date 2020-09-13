@@ -454,6 +454,9 @@ $ x64 -warp out.prg
 Commodore 64 PETSCII codes
 https://sta.c64.org/cbm64pet.html
 
+Commodore 64 ASCII poke codes
+https://sta.c64.org/cbm64scr.html
+
 C64 BASIC command reference
 https://www.c64-wiki.com/wiki/BASIC
 
