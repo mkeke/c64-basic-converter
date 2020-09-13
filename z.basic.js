@@ -14,7 +14,6 @@ const params = {
 const help = 
     "usage:\n  node z.basic.js [-w] [-o] [-c] [-h|--help] <filename>\n";
 
-
 if (!verifyParams()) {
     return;
 }
@@ -167,7 +166,8 @@ function convert() {
     // replace all constant references with values
     for(let i in code) {
         for(let x in consts) {
-            code[i] = code[i].replace(`<${x}>`, consts[x]);
+            let constExp = new RegExp('\<' + x + '\>', 'g');
+            code[i] = code[i].replace(constExp, consts[x]);
         }
     }
 
