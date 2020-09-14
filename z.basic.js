@@ -180,10 +180,17 @@ function convert() {
     }
 
     // replace all variable references with two character names
+    // sort vars by length of variable name
+    let sortedVars = Object.keys(vars).sort(function(a,b) {
+        return b.length - a.length 
+    });
     for(let i in code) {
-        for(let x in vars) {
-            let varExp = new RegExp('\>'+x+'([^a-zA-Z0-9]|$)', 'g');
-            code[i] = code[i].replace(varExp, vars[x] + "$1");
+        for(let v in sortedVars) {
+            let x = sortedVars[v];
+            // let varExp = new RegExp('\>'+x+'([^a-zA-Z0-9]|$)', 'g');
+            // code[i] = code[i].replace(varExp, vars[x] + "$1");
+            let varExp = new RegExp('\>'+x, 'g');
+            code[i] = code[i].replace(varExp, vars[x]);
         }
     }
 
