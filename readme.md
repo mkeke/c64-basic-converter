@@ -186,7 +186,7 @@ ERROR: label 'printHello' is defined more than once
 
 ### Variables
 
-It is possible to use custom, descriptive variable names in the master code. A custom variable must start with a `>` and can be in the range `a-zA-Z0-9`. These variables will be translated to `zz`, `zy`, `zx` and so on by the converter. Certain reserved words are of course not used as variable names.
+It is possible to use custom, descriptive variable names in the master code. A custom variable must start with a `>` and can be in the range `a-zA-Z0-9`. Variable names cannot start with a number. These variables will be translated to `zz`, `zy`, `zx` and so on by the converter. Certain reserved words are of course not used as variable names.
 
 Source code:
 ```
@@ -378,7 +378,7 @@ Converted code:
 25 print "hello"
 ```
 
-Side note: The constant value can contain basic code. Even references to `>variables`. The replacement of constants is done before the conversion, so anything is possible really. This can get ugly, but when used wisely the constants can be placeholders for short code snippets.
+Side note: The constant value can contain basic code. Even references to `>variables`. The replacement of constants is done before the conversion, so anything is possible really. This approach makes it possible to define reusable macros (placeholders for short code snippets).
 
 Example:
 ```
@@ -400,6 +400,7 @@ Converted code:
 - [ ] program flow
     - [ ] detect and report gosub/goto to undefined labels
     - [ ] detect and report undefined constants
+    - [ ] detect and report generated lines longer than 80 chars.
     - [ ] add included files to watch list
 - [ ] command line options
     - [ ] option: don't write to file

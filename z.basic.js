@@ -140,9 +140,10 @@ function convert() {
             There can be multiple variables on a single line
             A variable reference starts with a '>'
             and can be any characters in the range a-zA-Z0-9
+            The variable name cannot start with a number
             The |$ is needed to detect variables at the end of a line
         */
-        let varExp = /\>([a-zA-Z0-9]+)([^a-zA-Z0-9]|$)/g;
+        let varExp = /\>([a-zA-Z][a-zA-Z0-9]+)([^a-zA-Z0-9]|$)/g;
         let varMatches;
         do{
             varMatches = varExp.exec(line);
