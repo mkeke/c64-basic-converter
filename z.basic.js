@@ -1,5 +1,6 @@
 // convert from txt to basic
 const fs = require("fs");
+const exec = require("child_process").exec;
 
 // define default params
 const params = {
@@ -8,11 +9,16 @@ const params = {
     clear: false,
     help: false,
     filename: false,
+    outfile: '',
+    prgfile: '',
+    createPRG: false,
+    startEmulator: false,
+    warpMode: false,
 }
 
 // define reusable help string
 const help = 
-    "usage:\n  node z.basic.js [-w] [-o] [-c] [-h|--help] <filename>\n";
+    "usage:\n  node z.basic.js [-w] [-o] [-c] [-p [-e|-ew]] [-h|--help] <filename>\n";
 
 if (!verifyParams()) {
     return;
@@ -20,6 +26,7 @@ if (!verifyParams()) {
 
 // define output filename code.txt -> code.txt.bas
 params.outfile = params.filename + ".bas";
+params.prgfile = params.filename + ".prg";
 
 convert();
 
@@ -194,7 +201,6 @@ function convert() {
         }
     }
 
-    log(`found ${Object.keys(labels).length} labels, ${Object.keys(vars).length} variables, ${Object.keys(consts).length} constants`, true);
 
     if (params.output) {
         // output to console     
@@ -205,9 +211,52 @@ function convert() {
         log("");
     }
 
+    log(`found ${Object.keys(labels).length} labels, ${Object.keys(vars).length} variables, ${Object.keys(consts).length} constants`, true);
+
     // save to file
     log(`writing '${params.outfile}'`, true);
     fs.writeFileSync(params.outfile, code.join("\n") + "\n", "utf8");
+
+    if(params.createPRG) {
+
+        exec(`petcat -w2 -o ${params.prgfile} ${params.outfile}`, (err,stdout,stderr)=>{
+            if (err || stderr) {
+                log(stderr);
+                return;
+            } else {
+                log(`writing '${params.prgfile}'`, true);
+
+                if(params.startEmulator) {
+                    startEmulator();
+                }
+
+            }
+        });
+
+
+    }
+}
+
+/*
+    startEmulator
+    launches x64 with the .prg file in either warp mode or normal mode
+*/
+function startEmulator() {
+    log(`starting emulator`, true);
+
+    let cmd = 'x64 ';
+    cmd += params.warpMode?'-warp ':'+warp ';
+    cmd += params.prgfile;
+
+    exec(cmd, (err,stdout,stderr)=>{
+        if (err || stderr) {
+            log(stderr);
+            return;
+        } else {
+            // called when emulator has quit
+        }
+    });
+
 }
 
 /*
@@ -264,6 +313,16 @@ function verifyParams() {
                 break;
             case "-c":
                 params.clear = true;
+                break;
+            case "-p":
+                params.createPRG = true;
+                break;
+            case "-e":
+                params.startEmulator = true;
+                break;
+            case "-ew":
+                params.startEmulator = true;
+                params.warpMode = true;
                 break;
         }
     }

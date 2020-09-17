@@ -1,39 +1,57 @@
 # C64 BASIC converter
 
-Converting a file with "enhanced" C64 BASIC code into C64 BASIC.
+Converts a file with "enhanced" C64 BASIC code into C64 BASIC. Further converts the basic code into a handy PRG file, and optionally launches it in VICE - the Versatile Commodore Emulator.
+
+See "Code formatting possibilities".
 
 Synopsis:
 ```
 $ node z.basic.js [options] <code.txt>
 ```
 
-Converts a nicely formatted `code.txt` to C64 BASIC, saving it as `code.txt.bas`, and optionally outputs it to the terminal.
-
-The converted BASIC code can be copy/pasted into the emulator (or further converted to a .prg file).
-
 Options:
 - `<code.txt>` **required** a text file with the nicely formatted master code (see possibilities below)
 - `-w` watches for changes to the file, and triggers conversion
 - `-o` outputs the converted code to the terminal
 - `-c` clears the terminal before outputting. This is useful in combination with the watch option
+- `-p` creates `code.txt.prg` using `petcat` from the converted code
+- `-e` launches emulator (x64) when prg file is created
+- `-ew` launches emulator (x64) in warp mode when prg file is created
 - `-h` or `--help` displays help about the converter
 
 
-## Installation
+## Installation (Ubuntu)
 
-### Node.js
+The following installation instructions are Ubuntu specific. The converter should however work on other operating systems with some minor modifications.
 
-Node.js must be installed to be able to run this script. Please consult https://nodejs.org/en/
+The following dependencies must be installed
 
-To install on your preferred Linux diostro, please consult https://github.com/nodesource/distributions/blob/master/README.md
+### Node.js (required)
 
-Installing Node.js v12.x on Ubuntu
+Please consult https://nodejs.org/en/
+
+To install on your preferred Linux distro, please consult https://github.com/nodesource/distributions/blob/master/README.md
+
+Installing Node.js v14.x on Ubuntu
 ```
-$ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+$ curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 $ sudo apt-get install -y nodejs
 ```
 
-### Add as a global terminal command
+### VICE (petcat + x64) (optional but recommended)
+
+The converter has the option to build prg files and open them with the Vice C64 emulator.
+This must be installed and configured.
+
+Installing Vice
+```
+$ sudo apt-get install vice
+```
+
+See https://vice-emu.sourceforge.io/ for info on copying ROMs etc.
+
+
+### Add as global command (optional but recommended)
 
 Copy `z.basic.js` to your `~/bin` folder.
 
@@ -67,7 +85,7 @@ $ z.basic [options] <code.txt>
 - Labels
 - Variables
 - Working with multiple files
-- Constants
+- Constants / Macros
 
 ### Automatic line numbers
 
@@ -311,7 +329,7 @@ Include files can be organised in a separate folder if you like:
 @include templates/drawlogo.txt
 ```
 
-### Constants
+### Constants / Macros
 
 A constant is defined on a single line like this:
 ```
@@ -378,13 +396,13 @@ Converted code:
 25 print "hello"
 ```
 
-Side note: The constant value can contain basic code. Even references to `>variables`. The replacement of constants is done before the conversion, so anything is possible really. This approach makes it possible to define reusable macros (placeholders for short code snippets).
+To expand on this, you can have basic code as the constant value. Even references to `>variables`. The replacement of constants is done before the conversion, so anything is possible really. This approach makes it possible to define reusable macros (placeholders for short code snippets).
 
 Example:
 ```
 <clrscr> = print chr$(147);
 
-<clrsrc>
+<clrscr>
 print "hello"
 ```
 
@@ -404,11 +422,10 @@ Converted code:
     - [ ] add included files to watch list
 - [ ] command line options
     - [ ] option: don't write to file
-    - [ ] option: create .prg file
 - [ ] optional config block on top of master file
     - [ ] config: set preferred steps between line numbers (1, 5, 10, ..)
-    - [ ] config: autostart emulator after build
-    - [ ] config: start emulator in warp mode
+    - [ ] config: toggle autostart emulator
+    - [ ] config: toggle warp mode
 
 No, there will be no validation of the actual BASIC code! :-D
 
@@ -432,23 +449,6 @@ Something like this, that can be easily converted to JSON:
 }
 ```
 
-
-## Misc notes (for later)
-
-convert code.txt to .prg
-```
-$ petcat -w2 -o out.prg code.txt
-```
-
-start vice with prg file loaded
-```
-$ x64 out.prg
-```
-
-start vice with warp mode enabled
-```
-$ x64 -warp out.prg
-```
 
 ## C64 references
 
