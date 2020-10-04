@@ -141,7 +141,6 @@ function convert() {
             line = "";
         }
 
-
         /*
             Look for variables.
             There can be multiple variables on a single line
@@ -180,8 +179,13 @@ function convert() {
     }
 
     // replace all label references with line numbers
+    // sort label names by length of label name
+    let sortedLabels = Object.keys(labels).sort(function(a,b) {
+        return b.length - a.length 
+    });
     for(let i in code) {
-        for(let x in labels) {
+        for(let l in sortedLabels) {
+            let x = sortedLabels[l];
             code[i] = code[i].replace(`@${x}`, labels[x]);
         }
     }
@@ -194,8 +198,6 @@ function convert() {
     for(let i in code) {
         for(let v in sortedVars) {
             let x = sortedVars[v];
-            // let varExp = new RegExp('\>'+x+'([^a-zA-Z0-9]|$)', 'g');
-            // code[i] = code[i].replace(varExp, vars[x] + "$1");
             let varExp = new RegExp('\>'+x, 'g');
             code[i] = code[i].replace(varExp, vars[x]);
         }
@@ -232,8 +234,6 @@ function convert() {
 
             }
         });
-
-
     }
 }
 
