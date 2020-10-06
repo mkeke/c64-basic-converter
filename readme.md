@@ -415,13 +415,14 @@ Converted code:
 
 ## Planned features / TODOs
 
+- [ ] custom variables: remove `>` prefix. Instead, declare variables using `@var foobar` or `@var foobar = 123` on a single line.
+- [ ] remove .txt extension before writing .bas and .prg
+- [ ] improve command line params. Creating .bas and .prg should be default
 - [ ] program flow
     - [ ] detect and report gosub/goto to undefined labels
     - [ ] detect and report undefined constants
     - [ ] detect and report generated lines longer than 80 chars.
     - [ ] add included files to watch list
-- [ ] command line options
-    - [ ] option: don't write to file
 - [ ] optional config block on top of master file
     - [ ] config: set preferred steps between line numbers (1, 5, 10, ..)
     - [ ] config: toggle autostart emulator
