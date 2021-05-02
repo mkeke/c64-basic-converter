@@ -6,7 +6,7 @@ See "Code formatting possibilities".
 
 Synopsis:
 ```
-$ node z.basic.js [options] <code.txt>
+$ c64bc [options] <code.txt>
 ```
 
 Options:
@@ -53,29 +53,11 @@ See https://vice-emu.sourceforge.io/ for info on copying ROMs etc.
 
 ### Add as global command (optional but recommended)
 
-Copy `z.basic.js` to your `~/bin` folder.
+Run:
 
-Edit or create `~/.bash_aliases`, adding the following line:
 ```
-alias z.basic='node ~/bin/z.basic.js'
+npm install -g https://github.com/mhvelplund/c64-basic-converter.git
 ```
-
-(I prefer to prefix my scripts with `z.`, but call it what you like)
-
-Verify that your system is using `.bash_aliases` file. Edit `~/.bashrc` and add the following lines if not already present:
-```
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-```
-
-Restart the terminal.
-
-The script can now be run from anywhere:
-```
-$ z.basic [options] <code.txt>
-```
-
 
 ## Code formatting possibilities
 

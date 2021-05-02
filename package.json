@@ -1,0 +1,12 @@
+{
+  "name": "c64-basic-converter",
+  "version": "1.0.0",
+  "description": "Converts a file with \"enhanced\" C64 BASIC code into C64 BASIC. Further converts the basic code into a handy PRG file, and optionally launches it in VICE - the Versatile Commodore Emulator.",
+  "main": "z.basic.js",
+  "directories": {
+    "example": "examples"
+  },
+  "bin": {
+    "c64bc": "./z.basic.js"
+  }
+}
