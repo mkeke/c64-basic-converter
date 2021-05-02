@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // convert from txt to basic
 const fs = require("fs");
 const exec = require("child_process").exec;
@@ -17,7 +18,7 @@ const params = {
 }
 
 // define reusable help string
-const help = 
+const help =
     "usage:\n  node z.basic.js [-w] [-o] [-c] [-p [-e|-ew]] [-h|--help] <filename>\n";
 
 if (!verifyParams()) {
@@ -30,7 +31,7 @@ params.prgfile = params.filename + ".prg";
 
 convert();
 
-if(params.watch) {
+if (params.watch) {
     watchFile();
 }
 
@@ -45,7 +46,7 @@ function convert() {
     let vars = {};
     let consts = {};
 
-    if(params.clear) {
+    if (params.clear) {
         console.clear();
     }
 
@@ -58,14 +59,14 @@ function convert() {
         look for @include statements
         replace the @include statements with the contents of the file
     */
-    for(let i=0; i<sourceFile.length; i++) {
+    for (let i = 0; i < sourceFile.length; i++) {
         let line = sourceFile[i];
 
         let matches = /^\@include (.+)$/.exec(line);
         if (matches != null && matches.length == 2) {
             let includeFilename = matches[1];
 
-            if(!fs.existsSync(includeFilename)) {
+            if (!fs.existsSync(includeFilename)) {
                 log(`ERROR: include file '${includeFilename}' not found`);
                 return;
             }
@@ -75,7 +76,7 @@ function convert() {
 
             // remove current include statement and add to sourcefile
             sourceFile[i] = "";
-            sourceFile.splice(i+1, 0, ...includeFile);
+            sourceFile.splice(i + 1, 0, ...includeFile);
         }
     }
 
@@ -84,19 +85,19 @@ function convert() {
         <pokeBlack> = 0
         <foobar> = hello there
     */
-    for(let i=0; i<sourceFile.length; i++) {
+    for (let i = 0; i < sourceFile.length; i++) {
         let line = sourceFile[i];
         let matches = /^<([a-zA-Z0-9]+)> *= *(.+)$/.exec(line);
-        if(matches != null && matches.length == 3) {
+        if (matches != null && matches.length == 3) {
             consts[matches[1]] = matches[2];
             sourceFile[i] = "";
         }
-    }    
+    }
 
     /*
         examine each line of the complete code
     */
-    for(let i=0; i<sourceFile.length; i++) {
+    for (let i = 0; i < sourceFile.length; i++) {
         let line = sourceFile[i];
 
         // remove whitespace on both sides of line
@@ -131,7 +132,7 @@ function convert() {
             let label = matches[1];
 
             // if label is already defined, display error
-            if(labels[label]) {
+            if (labels[label]) {
                 log(`ERROR: label '${label}' is defined more than once`);
                 return;
             }
@@ -151,13 +152,13 @@ function convert() {
         */
         let varExp = /\>([a-zA-Z][a-zA-Z0-9]+)([^a-zA-Z0-9]|$)/g;
         let varMatches;
-        do{
+        do {
             varMatches = varExp.exec(line);
-            if(varMatches) {
+            if (varMatches) {
                 let varName = varMatches[1];
                 // if var is not present in vars{}
                 // then pop the next available name from availableVars
-                if(vars[varName] === undefined) {
+                if (vars[varName] === undefined) {
                     vars[varName] = availableVars.pop();
                 }
             }
@@ -171,8 +172,8 @@ function convert() {
     }
 
     // replace all constant references with values
-    for(let i in code) {
-        for(let x in consts) {
+    for (let i in code) {
+        for (let x in consts) {
             let constExp = new RegExp('\<' + x + '\>', 'g');
             code[i] = code[i].replace(constExp, consts[x]);
         }
@@ -180,11 +181,11 @@ function convert() {
 
     // replace all label references with line numbers
     // sort label names by length of label name
-    let sortedLabels = Object.keys(labels).sort(function(a,b) {
-        return b.length - a.length 
+    let sortedLabels = Object.keys(labels).sort(function (a, b) {
+        return b.length - a.length
     });
-    for(let i in code) {
-        for(let l in sortedLabels) {
+    for (let i in code) {
+        for (let l in sortedLabels) {
             let x = sortedLabels[l];
             code[i] = code[i].replace(`@${x}`, labels[x]);
         }
@@ -192,13 +193,13 @@ function convert() {
 
     // replace all variable references with two character names
     // sort vars by length of variable name
-    let sortedVars = Object.keys(vars).sort(function(a,b) {
-        return b.length - a.length 
+    let sortedVars = Object.keys(vars).sort(function (a, b) {
+        return b.length - a.length
     });
-    for(let i in code) {
-        for(let v in sortedVars) {
+    for (let i in code) {
+        for (let v in sortedVars) {
             let x = sortedVars[v];
-            let varExp = new RegExp('\>'+x, 'g');
+            let varExp = new RegExp('\>' + x, 'g');
             code[i] = code[i].replace(varExp, vars[x]);
         }
     }
@@ -206,7 +207,7 @@ function convert() {
 
     if (params.output) {
         // output to console     
-        log("");   
+        log("");
         for (i in code) {
             log(code[i]);
         }
@@ -219,16 +220,16 @@ function convert() {
     log(`writing '${params.outfile}'`, true);
     fs.writeFileSync(params.outfile, code.join("\n") + "\n", "utf8");
 
-    if(params.createPRG) {
+    if (params.createPRG) {
 
-        exec(`petcat -w2 -o ${params.prgfile} ${params.outfile}`, (err,stdout,stderr)=>{
+        exec(`petcat -w2 -o ${params.prgfile} ${params.outfile}`, (err, stdout, stderr) => {
             if (err || stderr) {
                 log(stderr);
                 return;
             } else {
                 log(`writing '${params.prgfile}'`, true);
 
-                if(params.startEmulator) {
+                if (params.startEmulator) {
                     startEmulator();
                 }
 
@@ -245,10 +246,10 @@ function startEmulator() {
     log(`starting emulator`, true);
 
     let cmd = 'x64 ';
-    cmd += params.warpMode?'-warp ':'+warp ';
+    cmd += params.warpMode ? '-warp ' : '+warp ';
     cmd += params.prgfile;
 
-    exec(cmd, (err,stdout,stderr)=>{
+    exec(cmd, (err, stdout, stderr) => {
         if (err || stderr) {
             log(stderr);
             return;
@@ -288,18 +289,18 @@ function verifyParams() {
 
     // the first two elements of argv is "node" and "<name of script>"
     // remove these from the argv before proceeding
-    process.argv.splice(0,2);
+    process.argv.splice(0, 2);
 
-    if(process.argv.length == 0) {
+    if (process.argv.length == 0) {
         log("no arguments");
         log(help);
         return false;
     }
 
     // gather params
-    for(let i=0; i<process.argv.length; i++) {
+    for (let i = 0; i < process.argv.length; i++) {
         let param = process.argv[i];
-        switch(param) {
+        switch (param) {
             case "-h":
             case "-help":
             case "--help":
@@ -326,7 +327,7 @@ function verifyParams() {
                 break;
         }
     }
-    params.filename = process.argv[process.argv.length-1];
+    params.filename = process.argv[process.argv.length - 1];
 
     if (params.help) {
         log(help);
@@ -350,13 +351,13 @@ function generateAvailableVarNames() {
     let vars = [];
 
     let chars = "abcdefghijklmnopqrstuvwxyz".split("");
-    for(let a in chars) {
-        for(let b in chars) {
+    for (let a in chars) {
+        for (let b in chars) {
             vars.push(chars[a] + chars[b]);
         }
     }
     let reserved = ['if', 'or', 'go', 'to', 'fn', 'ti', 'st'];
-    for(let i in reserved) {
+    for (let i in reserved) {
         let reservedIndex = vars.indexOf(reserved[i]);
         if (reservedIndex > -1) {
             vars.splice(reservedIndex, 1);
@@ -366,21 +367,21 @@ function generateAvailableVarNames() {
     return vars;
 }
 
-function log (str, showTime) { 
+function log(str, showTime) {
     if (showTime === undefined) {
         showTime = false;
     }
-    if(showTime) {
+    if (showTime) {
         let now = new Date();
 
-        let t = now.getHours() < 10 ? '0':'';
+        let t = now.getHours() < 10 ? '0' : '';
         t += now.getHours() + ":";
-        t += now.getMinutes() < 10 ? '0':'';
+        t += now.getMinutes() < 10 ? '0' : '';
         t += now.getMinutes() + ":";
-        t += now.getSeconds() < 10 ? '0':'';
+        t += now.getSeconds() < 10 ? '0' : '';
         t += now.getSeconds();
 
-        console.log(`[${t}] ${str}`); 
+        console.log(`[${t}] ${str}`);
     } else {
         console.log(str);
     }
