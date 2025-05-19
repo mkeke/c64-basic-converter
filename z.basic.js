@@ -2,6 +2,14 @@
 const fs = require("fs");
 const exec = require("child_process").exec;
 
+// configuration
+const conf = {
+    EMU_EXE: "x64sc",     // emulator executable
+    PETCAT_EXE: "petcat", // petcat executable
+    LINE_START: 1,        // first line number
+    LINE_STEP: 1,         // line increment
+}
+
 // define default params
 const params = {
     watch: false,
@@ -38,7 +46,7 @@ if(params.watch) {
 
 function convert() {
     let code = [];
-    let lineNumber = 10;
+    let lineNumber = conf.LINE_START;
     let isCommentBlock = false;
     let labels = {};
     let availableVars = generateAvailableVarNames();
@@ -166,7 +174,7 @@ function convert() {
         // create line numbers
         if (!isCommentBlock && line != "") {
             code.push(lineNumber + " " + line);
-            lineNumber += 5;
+            lineNumber += conf.LINE_STEP;
         }
     }
 
@@ -221,7 +229,7 @@ function convert() {
 
     if(params.createPRG) {
 
-        exec(`petcat -w2 -o ${params.prgfile} ${params.outfile}`, (err,stdout,stderr)=>{
+        exec(`${conf.PETCAT_EXE} -w2 -o ${params.prgfile} ${params.outfile}`, (err,stdout,stderr)=>{
             if (err || stderr) {
                 log(stderr);
                 return;
@@ -244,7 +252,7 @@ function convert() {
 function startEmulator() {
     log(`starting emulator`, true);
 
-    let cmd = 'x64 ';
+    let cmd = `${conf.EMU_EXE} `;
     cmd += params.warpMode?'-warp ':'+warp ';
     cmd += params.prgfile;
 

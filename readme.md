@@ -76,6 +76,14 @@ The script can now be run from anywhere:
 $ z.basic [options] <code.txt>
 ```
 
+### Adjust config
+
+The converter has a `config` object in the top of the file. The following can be defined:
+- `EMU_EXE` is the emulator executable
+- `PETCAT_EXE` is the petcat executable
+- `LINE_START` is the first line number
+- `LINE_STEP` is the line increment
+
 
 ## Code formatting possibilities
 
@@ -423,10 +431,7 @@ Converted code:
     - [ ] detect and report undefined constants
     - [ ] detect and report generated lines longer than 80 chars.
     - [ ] add included files to watch list
-- [ ] optional config block on top of master file
-    - [ ] config: set preferred steps between line numbers (1, 5, 10, ..)
-    - [ ] config: toggle autostart emulator
-    - [ ] config: toggle warp mode
+- [ ] define default param values in config block
 
 No, there will be no validation of the actual BASIC code! :-D
 
@@ -434,21 +439,6 @@ No, there will be no validation of the actual BASIC code! :-D
 ## Bugs and issues
 
 I'll try to keep this section fairly empty.
-
-
-## Thoughts about a config block
-
-It would be nice to have a config block at the top of the master file, to be able to tweak how the converter behaves. For instance toggling a launchEmulator option.
-
-Something like this, that can be easily converted to JSON:
-```
-{CONF
-    lineNumberStep: 5,
-    createPRG: false,
-    launchEmulator: false,
-    warpMode: true,
-}
-```
 
 
 ## C64 references
