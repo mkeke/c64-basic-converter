@@ -8,6 +8,8 @@ const conf = {
     PETCAT_EXE: "petcat", // petcat executable
     LINE_START: 1,        // first line number
     LINE_STEP: 1,         // line increment
+    REGEX_DOUBLESLASH_COMMENT: /\/\/.*$/,
+    REGEX_SLASHSTAR_COMMENT: /\/\*.*\*\//,
 }
 
 // define default params
@@ -94,13 +96,22 @@ function convert() {
     */
     for(let i=0; i<sourceFile.length; i++) {
         let line = sourceFile[i];
-        let matches = /^<([a-zA-Z0-9]+)> *= *(.+)$/.exec(line);
+        let matches = /^<([a-zA-Z0-9_$]+)> *= *(.+)$/.exec(line);
         if(matches != null && matches.length == 3) {
-            consts[matches[1]] = matches[2];
+            // escape $ in constant name
+            let key = matches[1].replace(/\$/g, "\\$");
+            consts[key] = matches[2];
             sourceFile[i] = "";
         }
-    }    
-
+    }
+    // remove comments and white space from constants
+    for(let key in consts) {
+        consts[key] = consts[key].replace(conf.REGEX_DOUBLESLASH_COMMENT, "");
+        consts[key] = consts[key].replace(conf.REGEX_SLASHSTAR_COMMENT, "");
+        consts[key] = consts[key].trim();
+        log(key);
+    }
+    
     /*
         examine each line of the complete code
     */
@@ -108,15 +119,15 @@ function convert() {
         let line = sourceFile[i];
 
         // remove whitespace on both sides of line
-        line = line.replace(/^\s+|\s+$/g, "");
+        line = line.trim();
 
         // remove single-line comments (see readme.md)
         // line = line.replace(/^\/\/.*$/, "");
-        line = line.replace(/\/\/.*$/, "");
+        line = line.replace(conf.REGEX_DOUBLESLASH_COMMENT, "");
 
         // remove multi-line comments on a single line (see readme.md)
         // line = line.replace(/^\/\*.*\*\/$/, "");
-        line = line.replace(/\/\*.*\*\//, "");
+        line = line.replace(conf.REGEX_SLASHSTAR_COMMENT, "");
 
         // start of multi-line comment
         if (/^\/\*/.test(line)) {
