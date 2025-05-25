@@ -136,7 +136,7 @@ Converted code:
 
 ### Comments
 
-The master code can have single-line and multi-line comments. These will be removed by the converter. However, `REM` statements will end up in the final code.
+The master code can have single-line `// foo` and multi-line `/* bar */` comments. These will be removed by the converter. However, `REM` statements will end up in the final code.
 
 Source code:
 ```
@@ -154,7 +154,7 @@ poke 53281,0
 /* display the message */
 a$ = "world"
 rem printing the variable
-print "hello " a$
+print "hello " a$ // "hello world"
 ```
 
 Converted code:
@@ -169,6 +169,35 @@ Converted code:
 
 Labels and variables inside comments will be ignored.
 
+Note: comments can be used together with code, with two calculated drawbacks:
+1. everything from `//` and the rest of the line will be removed.
+2. everything from `/*` and including `*/` on a single line will be removed.
+
+Source code:
+```
+print "hello" // greeting
+
+print "parallel lines will be removed:"
+print " // || \\ "
+
+print "/* this will be removed */"
+
+print "/* multiple lines"
+print "are ok */"
+
+print "the end"
+```
+
+Converted code:
+```
+1 print "hello" 
+2 print "parallel lines will be removed:"
+3 print " 
+4 print ""
+5 print "/* multiple lines"
+6 print "are ok */"
+7 print "the end"
+```
 
 ### Labels
 

@@ -110,11 +110,13 @@ function convert() {
         // remove whitespace on both sides of line
         line = line.replace(/^\s+|\s+$/g, "");
 
-        // remove single-line comments
-        line = line.replace(/^\/\/.*$/, "");
+        // remove single-line comments (see readme.md)
+        // line = line.replace(/^\/\/.*$/, "");
+        line = line.replace(/\/\/.*$/, "");
 
-        // remove multi-line comments on a single line
-        line = line.replace(/^\/\*.*\*\/$/, "");
+        // remove multi-line comments on a single line (see readme.md)
+        // line = line.replace(/^\/\*.*\*\/$/, "");
+        line = line.replace(/\/\*.*\*\//, "");
 
         // start of multi-line comment
         if (/^\/\*/.test(line)) {
