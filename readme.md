@@ -449,6 +449,72 @@ Converted code:
 15 print "hello"
 ```
 
+### Constants and 6502 assembly in BASIC
+
+Expanding further on the usage of constants, because why not!
+Let's define all 6502 assembler instruction opcodes as constants and write assembler instructions that are POKEd to the correct memory adress and then run.
+
+Source Code
+```
+// 6502 assembler example
+
+// end identifier to break the read cycle
+<end> = 999
+
+// misc instruction opcodes
+<lda>   = 169 // Load Accumulator with immediate value
+<sta_m> = 141 // Store Accumulator to memory
+<rts>   =  96 // Return from Subroutine
+
+// misc mem adresses expanded to low + high byte
+<$d020> = 32,208 // screen border color
+<$d021> = 33,208 // screen color
+
+// misc values
+<cyan> = 3
+
+// assembly code
+data <lda>,<cyan>
+data <sta_m>,<$d020>
+data <rts>
+data <end>
+
+// POKE assembly to memory until end
+a=49152:i=0
+@loop
+  read x
+  if x=<end> then goto @done   
+  poke a+i,x
+  i=i+1
+  goto @loop
+
+// run
+@done
+  sys a
+```
+
+Converted code:
+```
+1 data 169,3
+2 data 141,32,208
+3 data 96
+4 data 999
+5 a=49152:i=0
+6 read x
+7 if x=999 then goto 11
+8 poke a+i,x
+9 i=i+1
+10 goto 6
+11 sys a
+```
+
+The code will make the border color cyan.
+
+A separate file could define all possible instruction opcodes, useful memory adresses and values for reuse. Another file could contain the POKE routine. And then the POKE loop could be put in the middle.
+
+The converter has been adjusted to allow `$` in constant names, without checking the robustness of this.
+
+
 
 ## Planned features / TODOs
 

@@ -109,7 +109,6 @@ function convert() {
         consts[key] = consts[key].replace(conf.REGEX_DOUBLESLASH_COMMENT, "");
         consts[key] = consts[key].replace(conf.REGEX_SLASHSTAR_COMMENT, "");
         consts[key] = consts[key].trim();
-        log(key);
     }
     
     /*
